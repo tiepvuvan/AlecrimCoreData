@@ -11,40 +11,14 @@ import CoreData
 
 extension NSManagedObjectContext {
     
-    /// Asynchronously performs a given closure on the receiver’s queue.
-    ///
-    /// - parameter closure: The closure to perform.
-    ///
-    /// - note: Calling this method is the same as calling `performBlock:` method.
-    ///
-    /// - seealso: `performBlock:`
-    public func perform(closure: () -> Void) {
-        self.performBlock(closure)
-    }
-    
-    /// Synchronously performs a given closure on the receiver’s queue.
-    ///
-    /// - parameter closure: The closure to perform
-    ///
-    /// - note: Calling this method is the same as calling `performBlockAndWait:` method.
-    ///
-    /// - seealso: `performBlockAndWait:`
-    public func performAndWait(closure: () -> Void) {
-        self.performBlockAndWait(closure)
-    }
-
-}
-
-extension NSManagedObjectContext {
-    
     @available(OSX 10.10, iOS 8.0, *)
-    internal func executeAsynchronousFetchRequest(fetchRequest fetchRequest: NSFetchRequest, completion completionHandler: ([AnyObject]?, NSError?) -> Void) throws {
+    internal func executeAsynchronousFetchRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>, completion completionHandler: ([AnyObject]?, NSError?) -> Void) throws {
         let asynchronousFetchRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { asynchronousFetchResult in
             completionHandler(asynchronousFetchResult.finalResult, asynchronousFetchResult.operationError)
         }
         
-        let persistentStoreResult = try self.executeRequest(asynchronousFetchRequest)
-        if let _ = persistentStoreResult as? NSAsynchronousFetchResult {
+        let persistentStoreResult = try self.execute(asynchronousFetchRequest)
+        if let _ = persistentStoreResult as? NSAsynchronousFetchResult<NSFetchRequestResult> {
             
         }
         else {
@@ -57,11 +31,11 @@ extension NSManagedObjectContext {
 extension NSManagedObjectContext {
     
     @available(OSX 10.10, iOS 8.0, *)
-    internal func executeBatchUpdateRequest(entityDescription entityDescription: NSEntityDescription, propertiesToUpdate: [NSObject : AnyObject], predicate: NSPredicate, completion completionHandler: (Int, ErrorType?) -> Void) {
+    internal func executeBatchUpdateRequest(entityDescription: NSEntityDescription, propertiesToUpdate: [NSObject : AnyObject], predicate: Predicate, completion completionHandler: (Int, ErrorProtocol?) -> Void) {
         let batchUpdateRequest = NSBatchUpdateRequest(entity: entityDescription)
         batchUpdateRequest.propertiesToUpdate = propertiesToUpdate
         batchUpdateRequest.predicate = predicate
-        batchUpdateRequest.resultType = .UpdatedObjectsCountResultType
+        batchUpdateRequest.resultType = .updatedObjectsCountResultType
         
         //
         // HAX:
@@ -70,13 +44,13 @@ extension NSManagedObjectContext {
         //
         
         var moc: NSManagedObjectContext = self
-        while moc.parentContext != nil {
-            moc = moc.parentContext!
+        while moc.parent != nil {
+            moc = moc.parent!
         }
         
-        moc.performBlock {
+        moc.perform {
             do {
-                let persistentStoreResult = try moc.executeRequest(batchUpdateRequest)
+                let persistentStoreResult = try moc.execute(batchUpdateRequest)
                 
                 if let batchUpdateResult = persistentStoreResult as? NSBatchUpdateResult {
                     if let count = batchUpdateResult.result as? Int {
@@ -97,9 +71,9 @@ extension NSManagedObjectContext {
     }
 
     @available(OSX 10.11, iOS 9.0, *)
-    internal func executeBatchDeleteRequest(entityDescription entityDescription: NSEntityDescription, objectIDs: [NSManagedObjectID], completion completionHandler: (Int, ErrorType?) -> Void) {
+    internal func executeBatchDeleteRequest(entityDescription: NSEntityDescription, objectIDs: [NSManagedObjectID], completion completionHandler: (Int, ErrorProtocol?) -> Void) {
         let batchDeleteRequest = NSBatchDeleteRequest(objectIDs: objectIDs)
-        batchDeleteRequest.resultType = .ResultTypeCount
+        batchDeleteRequest.resultType = .resultTypeCount
         
         //
         // HAX:
@@ -108,13 +82,13 @@ extension NSManagedObjectContext {
         //
         
         var moc: NSManagedObjectContext = self
-        while moc.parentContext != nil {
-            moc = moc.parentContext!
+        while moc.parent != nil {
+            moc = moc.parent!
         }
         
-        moc.performBlock {
+        moc.perform {
             do {
-                let persistentStoreResult = try moc.executeRequest(batchDeleteRequest)
+                let persistentStoreResult = try moc.execute(batchDeleteRequest)
                 
                 if let batchDeleteResult = persistentStoreResult as? NSBatchDeleteResult {
                     if let count = batchDeleteResult.result as? Int {

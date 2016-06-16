@@ -22,6 +22,7 @@
 		142629A71D12BEFC00567450 /* AttributeQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FBAD691B76AF2100EB662A /* AttributeQuery.swift */; };
 		142629A81D12C01A00567450 /* DataContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D971F1B5DA55C00995795 /* DataContext.swift */; };
 		142629A91D12C0E000567450 /* NSManagedObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D97221B5DA55C00995795 /* NSManagedObjectExtensions.swift */; };
+		142629AA1D12C1D000567450 /* NSManagedObjectContextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A5016F1B671A400057DD8B /* NSManagedObjectContextExtensions.swift */; };
 		1447ADD01B52B2F000ADEAED /* AlecrimCoreData.h in Headers */ = {isa = PBXBuildFile; fileRef = 1447ADCF1B52B2F000ADEAED /* AlecrimCoreData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -278,6 +279,7 @@
 				142629A61D12BD7D00567450 /* Table.swift in Sources */,
 				142629A91D12C0E000567450 /* NSManagedObjectExtensions.swift in Sources */,
 				1426299B1D12B17E00567450 /* AlecrimCoreDataError.swift in Sources */,
+				142629AA1D12C1D000567450 /* NSManagedObjectContextExtensions.swift in Sources */,
 				1426299C1D12B1A200567450 /* Enumerable.swift in Sources */,
 				1426299D1D12B1F400567450 /* Queryable.swift in Sources */,
 				142629A41D12B7EA00567450 /* TableProtocol.swift in Sources */,
