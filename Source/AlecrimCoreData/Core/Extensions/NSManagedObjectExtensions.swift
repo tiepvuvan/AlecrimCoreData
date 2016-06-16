@@ -16,42 +16,42 @@ extension NSManagedObject {
             return self
         }
         
-        if self.objectID.temporaryID {
-            try otherContext.obtainPermanentIDsForObjects([self])
+        if self.objectID.isTemporaryID {
+            try otherContext.obtainPermanentIDs(for: [self])
         }
         
-        let otherManagedObject = try otherContext.existingObjectWithID(self.objectID)
+        let otherManagedObject = try otherContext.existingObject(with: self.objectID)
         
-        return unsafeBitCast(otherManagedObject, self.dynamicType)
+        return unsafeBitCast(otherManagedObject, to: self.dynamicType)
     }
     
 }
 
 extension NSManagedObject {
     
-    public func delete() {
-        self.managedObjectContext!.deleteObject(self)
+    public final func delete() {
+        self.managedObjectContext!.delete(self)
     }
     
-    public func refresh(mergingChanges mergeChanges: Bool = true) {
-        self.managedObjectContext!.refreshObject(self, mergeChanges: mergeChanges)
+    public final func refresh(mergeChanges: Bool = true) {
+        self.managedObjectContext!.refresh(self, mergeChanges: mergeChanges)
     }
 
 }
 
 extension NSManagedObject {
     
-    public class func isIn(values: Set<NSManagedObject>) -> NSComparisonPredicate {
+    public class func isIn(values: Set<NSManagedObject>) -> ComparisonPredicate {
         let rightExpressionConstantValues = values.map { NSExpression(forConstantValue: $0.objectID) }
         let rightExpression = NSExpression(forAggregate: rightExpressionConstantValues)
         let leftExpression = NSExpression(forKeyPath: "objectID")
         
-        return NSComparisonPredicate(
+        return ComparisonPredicate(
             leftExpression: leftExpression,
             rightExpression: rightExpression,
-            modifier: .DirectPredicateModifier,
-            type: .InPredicateOperatorType,
-            options: NSComparisonPredicateOptions()
+            modifier: .direct,
+            type: .in,
+            options: []
         )
     }
     
