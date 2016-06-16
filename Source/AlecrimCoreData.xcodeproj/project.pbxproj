@@ -20,6 +20,7 @@
 		142629A51D12B9CD00567450 /* AttributeQueryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148C17411B76B5980011BD00 /* AttributeQueryProtocol.swift */; };
 		142629A61D12BD7D00567450 /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D972B1B5DA55C00995795 /* Table.swift */; };
 		142629A71D12BEFC00567450 /* AttributeQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FBAD691B76AF2100EB662A /* AttributeQuery.swift */; };
+		142629A81D12C01A00567450 /* DataContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D971F1B5DA55C00995795 /* DataContext.swift */; };
 		1447ADD01B52B2F000ADEAED /* AlecrimCoreData.h in Headers */ = {isa = PBXBuildFile; fileRef = 1447ADCF1B52B2F000ADEAED /* AlecrimCoreData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -272,6 +273,7 @@
 				1426299E1D12B22B00567450 /* AttributeProtocol.swift in Sources */,
 				142629A31D12B5AD00567450 /* Attribute.swift in Sources */,
 				142629A01D12B3E400567450 /* PredicateExtensions.swift in Sources */,
+				142629A81D12C01A00567450 /* DataContext.swift in Sources */,
 				142629A61D12BD7D00567450 /* Table.swift in Sources */,
 				1426299B1D12B17E00567450 /* AlecrimCoreDataError.swift in Sources */,
 				1426299C1D12B1A200567450 /* Enumerable.swift in Sources */,

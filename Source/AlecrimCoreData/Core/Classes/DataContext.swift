@@ -55,7 +55,7 @@ public class DataContext: ChildDataContext {
     public init(options: DataContextOptions) {
         do {
             let rootSavingDataContext = try RootSavingDataContext(options: options)
-            super.init(concurrencyType: .MainQueueConcurrencyType, rootSavingDataContext: rootSavingDataContext)
+            super.init(concurrencyType: .mainQueueConcurrencyType, rootSavingDataContext: rootSavingDataContext)
             
             if #available(OSXApplicationExtension 10.10, OSX 10.10, *) {
                 self.name = "Main Thread Context"
@@ -72,7 +72,7 @@ public class DataContext: ChildDataContext {
     ///
     /// - returns: An initialized background context.
     public init(parent: DataContext) {
-        super.init(concurrencyType: .PrivateQueueConcurrencyType, rootSavingDataContext: parent.rootSavingDataContext)
+        super.init(concurrencyType: .privateQueueConcurrencyType, rootSavingDataContext: parent.rootSavingDataContext)
         
         if #available(OSXApplicationExtension 10.10, OSX 10.10, *) {
             self.name = "Background Context"
@@ -106,7 +106,7 @@ public class RootSavingDataContext: ManagedObjectContext {
     /// - seealso: `DataContextOptions`
     public init(options: DataContextOptions) throws {
         self.options = options
-        super.init(concurrencyType: .PrivateQueueConcurrencyType)
+        super.init(concurrencyType: .privateQueueConcurrencyType)
         
         if #available(OSXApplicationExtension 10.10, OSX 10.10, *) {
             self.name = "Root Saving Context"
@@ -128,7 +128,7 @@ public class RootSavingDataContext: ManagedObjectContext {
         // managed object model
         guard
             let managedObjectModelURL = self.options.managedObjectModelURL,
-            let managedObjectModel = NSManagedObjectModel(contentsOfURL: managedObjectModelURL)
+            let managedObjectModel = NSManagedObjectModel(contentsOf: managedObjectModelURL)
         else {
             throw AlecrimCoreDataError.invalidManagedObjectModelURL
         }
@@ -141,16 +141,16 @@ public class RootSavingDataContext: ManagedObjectContext {
         case .disk:
             guard
                 let persistentStoreURL = self.options.persistentStoreURL,
-                let containerURL = persistentStoreURL.URLByDeletingLastPathComponent
+                let containerURL = (try? persistentStoreURL.deletingLastPathComponent())
             else {
                 throw AlecrimCoreDataError.invalidPersistentStoreURL
             }
             
             // if the directory does not exist, it will be created
-            try NSFileManager.defaultManager().createDirectoryAtURL(containerURL, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default().createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
             
             do {
-                try persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: self.options.persistentStoreConfiguration, URL: persistentStoreURL, options: self.options.persistentStoreOptions)
+                try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: self.options.persistentStoreConfiguration, at: persistentStoreURL, options: self.options.persistentStoreOptions)
             }
             catch let error as NSError {
                 var handled = false
@@ -169,14 +169,14 @@ public class RootSavingDataContext: ManagedObjectContext {
             }
             
         case .memory:
-            try persistentStoreCoordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: self.options.persistentStoreConfiguration, URL: nil, options: self.options.persistentStoreOptions)
+            try persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: self.options.persistentStoreConfiguration, at: nil, options: self.options.persistentStoreOptions)
         }
         
         //
         self.persistentStoreCoordinator = persistentStoreCoordinator
     }
     
-    private func handleMigrationError(error: NSError) -> Bool {
+    private func handleMigrationError(_ error: NSError) -> Bool {
         return false
     }
     
@@ -206,7 +206,7 @@ public class ChildDataContext: ManagedObjectContext {
         self.rootSavingDataContext = rootSavingDataContext
         super.init(concurrencyType: concurrencyType)
         
-        self.parentContext = self.rootSavingDataContext
+        self.parent = self.rootSavingDataContext
     }
     
     public required init(coder aDecoder: NSCoder) {
@@ -228,8 +228,8 @@ public class ChildDataContext: ManagedObjectContext {
         
         try super.save()
         
-        var error: ErrorType? = nil
-        self.rootSavingDataContext.performBlockAndWait {
+        var error: ErrorProtocol? = nil
+        self.rootSavingDataContext.performAndWait {
             self.enableMergeFromRootSavingDataContext = false
             defer { self.enableMergeFromRootSavingDataContext = true }
             
@@ -253,24 +253,24 @@ public class ChildDataContext: ManagedObjectContext {
         super.addObservers()
         
         // the root data context did save
-        self.addObserver(name: NSManagedObjectContextDidSaveNotification, object: self.rootSavingDataContext) { [unowned self] notification in
+        self.addObserver(name: NSNotification.Name.NSManagedObjectContextDidSave.rawValue, object: self.rootSavingDataContext) { [unowned self] notification in
             guard
                 self.enableMergeFromRootSavingDataContext && notification.object is RootSavingDataContext,
-                let changeNotificationData = notification.userInfo
+                let changeNotificationData = (notification as NSNotification).userInfo
             else {
                 return
             }
             
-            self.performBlock {
+            self.perform {
                 //
                 if let updatedObjects = changeNotificationData[NSUpdatedObjectsKey] as? Set<NSManagedObject> where !updatedObjects.isEmpty {
                     for updatedObject in updatedObjects {
-                        self.objectWithID(updatedObject.objectID).willAccessValueForKey(nil) // ensures that a fault has been fired
+                        self.object(with: updatedObject.objectID).willAccessValue(forKey: nil) // ensures that a fault has been fired
                     }
                 }
                 
                 //
-                self.mergeChangesFromContextDidSaveNotification(notification)
+                self.mergeChanges(fromContextDidSave: notification)
             }
         }
     }
@@ -306,11 +306,11 @@ public class ManagedObjectContext: NSManagedObjectContext {
     /// Requires super.
     public func addObservers() {
         // this context will save
-        self.addObserver(name: NSManagedObjectContextWillSaveNotification, object: self) { notification in
+        self.addObserver(name: NSNotification.Name.NSManagedObjectContextWillSave.rawValue, object: self) { notification in
             guard let notificationContext = notification.object as? NSManagedObjectContext where !notificationContext.insertedObjects.isEmpty else { return }
             
             do {
-                try notificationContext.obtainPermanentIDsForObjects(Array(notificationContext.insertedObjects))
+                try notificationContext.obtainPermanentIDs(for: Array(notificationContext.insertedObjects))
             }
             catch {
             }
@@ -318,15 +318,15 @@ public class ManagedObjectContext: NSManagedObjectContext {
     }
     
     private func removeObservers() {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let notificationCenter = NotificationCenter.default()
         
         for observer in self.observers {
             notificationCenter.removeObserver(observer)
         }
     }
     
-    public final func addObserver(name name: String, object: AnyObject, closure: (NSNotification) -> Void) {
-        let observer = NSNotificationCenter.defaultCenter().addObserverForName(name, object: object, queue: nil, usingBlock: closure)
+    public final func addObserver(name: String, object: AnyObject, closure: (Notification) -> Void) {
+        let observer = NotificationCenter.default().addObserver(forName: NSNotification.Name(rawValue: name), object: object, queue: nil, using: closure)
         self.observers.append(observer)
     }
     
