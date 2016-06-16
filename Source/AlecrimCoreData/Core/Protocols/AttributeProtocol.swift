@@ -563,9 +563,6 @@ private func toAnyObject<T>(_ value: T) -> AnyObject {
     if let v = value as? AnyObject {
         return v
     }
-    else if let v = value as? String {
-        return v as NSString
-    }
     else if let v = value as? Int {
         return NSNumber(value: v)
     }
@@ -587,6 +584,15 @@ private func toAnyObject<T>(_ value: T) -> AnyObject {
     else if let v = value as? Bool {
         return NSNumber(value: v)
     }
+    else if let v = value as? String {
+        return v as NSString
+    }
+    else if let v = value as? Date {
+        return v as NSDate
+    }
+    else if let v = value as? Data {
+        return v as NSData
+    }
     else {
         // HAX: the value may be an optional, so we have to test the optional object type, one by one
         let mirror = Mirror(reflecting: value)
@@ -596,16 +602,6 @@ private func toAnyObject<T>(_ value: T) -> AnyObject {
             // reference types
             if dt is NSObject?.Type {
                 if let v = unsafeBitCast(value, to: Optional<NSObject>.self) {
-                    return v
-                }
-            }
-            else if dt is NSString?.Type {
-                if let v = unsafeBitCast(value, to: Optional<NSString>.self) {
-                    return v
-                }
-            }
-            else if dt is Date?.Type {
-                if let v = unsafeBitCast(value, to: Optional<Date>.self) {
                     return v
                 }
             }
@@ -619,19 +615,24 @@ private func toAnyObject<T>(_ value: T) -> AnyObject {
                     return v
                 }
             }
-            else if dt is Data?.Type {
-                if let v = unsafeBitCast(value, to: Optional<Data>.self) {
+            else if dt is NSString?.Type {
+                if let v = unsafeBitCast(value, to: Optional<NSString>.self) {
+                    return v
+                }
+            }
+            else if dt is NSDate?.Type {
+                if let v = unsafeBitCast(value, to: Optional<NSDate>.self) {
+                    return v
+                }
+            }
+            else if dt is NSData?.Type {
+                if let v = unsafeBitCast(value, to: Optional<NSData>.self) {
                     return v
                 }
             }
             
             // value types
-            if dt is String?.Type {
-                if let v = unsafeBitCast(value, to: Optional<String>.self) {
-                    return v as NSString
-                }
-            }
-            else if dt is Int?.Type {
+            if dt is Int?.Type {
                 if let v = unsafeBitCast(value, to: Optional<Int>.self) {
                     return NSNumber(value: v)
                 }
@@ -664,6 +665,21 @@ private func toAnyObject<T>(_ value: T) -> AnyObject {
             else if dt is Bool?.Type {
                 if let v = unsafeBitCast(value, to: Optional<Bool>.self) {
                     return NSNumber(value: v)
+                }
+            }
+            else if dt is String?.Type {
+                if let v = unsafeBitCast(value, to: Optional<String>.self) {
+                    return v as NSString
+                }
+            }
+            else if dt is Date?.Type {
+                if let v = unsafeBitCast(value, to: Optional<Date>.self) {
+                    return v as NSDate
+                }
+            }
+            else if dt is Data?.Type {
+                if let v = unsafeBitCast(value, to: Optional<Data>.self) {
+                    return v as NSData
                 }
             }
         }
