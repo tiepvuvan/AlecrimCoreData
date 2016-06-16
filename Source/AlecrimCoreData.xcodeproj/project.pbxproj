@@ -235,7 +235,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Alecrim;
 				TargetAttributes = {
 					1447ADCB1B52B2F000ADEAED = {
@@ -445,6 +445,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecrim.AlecrimCoreData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
