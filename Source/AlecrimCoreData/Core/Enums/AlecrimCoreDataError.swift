@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum AlecrimCoreDataError: ErrorType {
+public enum AlecrimCoreDataError: ErrorProtocol {
     case general
     
     case notSupported
@@ -21,13 +21,13 @@ public enum AlecrimCoreDataError: ErrorType {
     case unexpectedValue(Any)
     
     @noreturn
-    public static func handleError(error: ErrorType, message: String = "Unhandled error. See callstack.") {
+    public static func handleError(_ error: ErrorProtocol, message: String = "Unhandled error. See callstack.") {
         // TODO:
         self.fatalError(message)
     }
     
     @noreturn
-    public static func fatalError(message: String? = nil) {
+    public static func fatalError(_ message: String? = nil) {
         // TODO:
         if let message = message {
             Swift.fatalError(message)
