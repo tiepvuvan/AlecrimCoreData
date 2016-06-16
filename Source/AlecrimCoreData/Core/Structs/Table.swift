@@ -13,7 +13,6 @@ import CoreData
 
 private var cachedEntityDescriptions = [String : NSEntityDescription]()
 
-@warn_unused_result
 private func cachedEntityDescription(for dataContext: NSManagedObjectContext, managedObjectType: NSManagedObject.Type) -> NSEntityDescription {
     let dataContextClassName = String(dataContext.dynamicType)
     let managedObjectClassName = String(managedObjectType)
@@ -28,7 +27,7 @@ private func cachedEntityDescription(for dataContext: NSManagedObjectContext, ma
         let persistentStoreCoordinator = dataContext.persistentStoreCoordinator!
         let managedObjectModel = persistentStoreCoordinator.managedObjectModel
         
-        entityDescription = managedObjectModel.entities.filter({ $0.managedObjectClassName.componentsSeparatedByString(".").last! == managedObjectClassName }).first!
+        entityDescription = managedObjectModel.entities.filter({ $0.managedObjectClassName.components(separatedBy: ".").last! == managedObjectClassName }).first!
         cachedEntityDescriptions[cacheKey] = entityDescription
     }
     
@@ -40,7 +39,7 @@ private func cachedEntityDescription(for dataContext: NSManagedObjectContext, ma
 
 public struct Table<T: NSManagedObject>: TableProtocol {
     
-    public typealias Item = T
+    public typealias Element = T
     
     public let dataContext: NSManagedObjectContext
     public let entityDescription: NSEntityDescription
@@ -49,8 +48,8 @@ public struct Table<T: NSManagedObject>: TableProtocol {
     public var limit: Int = 0
     public var batchSize: Int = DataContextOptions.defaultBatchSize
     
-    public var predicate: NSPredicate? = nil
-    public var sortDescriptors: [NSSortDescriptor]? = nil
+    public var predicate: Predicate? = nil
+    public var sortDescriptors: [SortDescriptor]? = nil
     
     public init(dataContext: NSManagedObjectContext) {
         self.dataContext = dataContext
