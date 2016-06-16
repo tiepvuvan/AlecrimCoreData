@@ -11,48 +11,46 @@ import CoreData
 
 public protocol TableProtocol: CoreDataQueryable {
     
-    associatedtype Item: NSManagedObject
-
 }
 
 // MARK: - create, delete and refresh entities
 
-extension TableProtocol {
+extension TableProtocol where Self.Element: NSManagedObject {
     
-    public func createEntity() -> Self.Item {
-        return Self.Item(entity: self.entityDescription, insertIntoManagedObjectContext: self.dataContext)
+    public final func createEntity() -> Self.Element {
+        return Self.Element(entity: self.entityDescription, insertInto: self.dataContext)
     }
 
-    public func deleteEntity(entity: Self.Item) {
-        self.dataContext.deleteObject(entity)
+    public final func delete(_ entity: Self.Element) {
+        self.dataContext.delete(entity)
     }
     
-    public func refreshEntity(entity: Self.Item, mergingChanges mergeChanges: Bool = true) {
-        self.dataContext.refreshObject(entity, mergeChanges: mergeChanges)
+    public final func refresh(_ entity: Self.Element, mergeChanges: Bool = true) {
+        self.dataContext.refresh(entity, mergeChanges: mergeChanges)
     }
 
 }
 
 extension TableProtocol {
     
-    public func deleteEntities() {
-        let fetchRequest = self.toFetchRequest()
-        fetchRequest.resultType = .ManagedObjectIDResultType
+    public final func deleteEntities() throws {
+        let fetchRequest = self.toFetchRequest() as NSFetchRequest<NSManagedObjectID>
+        fetchRequest.resultType = .managedObjectIDResultType
         
-        let objectIDs = try! self.dataContext.executeFetchRequest(fetchRequest) as! [NSManagedObjectID]
+        let objectIDs = try self.dataContext.fetch(fetchRequest)
         
         for objectID in objectIDs {
-            let object = try! self.dataContext.existingObjectWithID(objectID)
-            self.dataContext.deleteObject(object)
+            let object = try self.dataContext.existingObject(with: objectID)
+            self.dataContext.delete(object)
         }
     }
 
 }
 
-extension TableProtocol {
+extension TableProtocol where Self.Element: NSManagedObject {
     
-    public func firstOrCreated(@noescape predicateClosure: (Self.Item.Type) -> NSComparisonPredicate) -> Self.Item {
-        let predicate = predicateClosure(Self.Item.self)
+    public final func firstOrCreated(_ predicateClosure: @noescape (Self.Element.Type) -> ComparisonPredicate) -> Self.Element {
+        let predicate = predicateClosure(Self.Element.self)
         
         if let entity = self.filter(using: predicate).first() {
             return entity
@@ -61,7 +59,7 @@ extension TableProtocol {
             let entity = self.createEntity()
             
             let attributeName = predicate.leftExpression.keyPath
-            let value: AnyObject = predicate.rightExpression.constantValue
+            let value: AnyObject = predicate.rightExpression.constantValue!
             
             (entity as NSManagedObject).setValue(value, forKey: attributeName)
             
@@ -76,19 +74,19 @@ extension TableProtocol {
 
 extension TableProtocol {
     
-    public func toArray() -> [Self.Item] {
+    public final func toArray() -> [Self.Element] {
         do {
-            var results: [Self.Item] = []
+            var results: [Self.Element] = []
             
-            let objects = try self.dataContext.executeFetchRequest(self.toFetchRequest())
+            let objects = try self.dataContext.fetch(self.toFetchRequest())
             
-            if let entities = objects as? [Self.Item] {
+            if let entities = objects as? [Self.Element] {
                 results += entities
             }
             else {
                 // HAX: the previous cast may not work in certain circumstances
                 try objects.forEach {
-                    guard let entity = $0 as? Self.Item else { throw AlecrimCoreDataError.unexpectedValue($0) }
+                    guard let entity = $0 as? Self.Element else { throw AlecrimCoreDataError.unexpectedValue($0) }
                     results.append(entity)
                 }
             }
@@ -106,8 +104,8 @@ extension TableProtocol {
 
 extension TableProtocol {
     
-    public func toFetchRequest() -> NSFetchRequest {
-        let fetchRequest = NSFetchRequest()
+    public final func toFetchRequest<ResultType: NSFetchRequestResult>() -> NSFetchRequest<ResultType> {
+        let fetchRequest = NSFetchRequest<ResultType>()
         
         fetchRequest.entity = self.entityDescription
         

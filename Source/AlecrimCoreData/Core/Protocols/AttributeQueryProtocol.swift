@@ -33,15 +33,15 @@ extension AttributeQueryProtocol {
 
 extension AttributeQueryProtocol {
     
-    public func toArray() -> [Self.Item] {
+    public func toArray() -> [Self.Element] {
         do {
-            var results: [Self.Item] = []
+            var results: [Self.Element] = []
             
-            let fetchRequestResult = try self.dataContext.executeFetchRequest(self.toFetchRequest())
+            let fetchRequestResult = try self.dataContext.fetch(self.toFetchRequest())
             guard let dicts = fetchRequestResult as? [NSDictionary] else { throw AlecrimCoreDataError.unexpectedValue(fetchRequestResult) }
             
             try dicts.forEach {
-                guard $0.count == 1, let value = $0.allValues.first as? Self.Item else {
+                guard $0.count == 1, let value = $0.allValues.first as? Self.Element else {
                     throw AlecrimCoreDataError.unexpectedValue($0)
                 }
                 
@@ -57,12 +57,12 @@ extension AttributeQueryProtocol {
     
 }
 
-extension AttributeQueryProtocol where Self.Item: NSDictionary {
+extension AttributeQueryProtocol where Self.Element: NSDictionary {
     
-    public func toArray() -> [NSDictionary] {
+    public func toArray() -> [Self.Element] {
         do {
-            let fetchRequestResult = try self.dataContext.executeFetchRequest(self.toFetchRequest())
-            guard let dicts = fetchRequestResult as? [NSDictionary] else { throw AlecrimCoreDataError.unexpectedValue(fetchRequestResult) }
+            let fetchRequestResult = try self.dataContext.fetch(self.toFetchRequest())
+            guard let dicts = fetchRequestResult as? [Self.Element] else { throw AlecrimCoreDataError.unexpectedValue(fetchRequestResult) }
             
             return dicts
         }
@@ -76,10 +76,10 @@ extension AttributeQueryProtocol where Self.Item: NSDictionary {
 
 // MARK: - CoreDataQueryable
 
-extension AttributeQueryProtocol {
+extension AttributeQueryProtocol where Self.Element: NSDictionary {
     
-    public func toFetchRequest() -> NSFetchRequest {
-        let fetchRequest = NSFetchRequest()
+    public final func toFetchRequest<ResultType: NSFetchRequestResult>() -> NSFetchRequest<ResultType> {
+        let fetchRequest = NSFetchRequest<ResultType>()
         
         fetchRequest.entity = self.entityDescription
         
@@ -91,7 +91,7 @@ extension AttributeQueryProtocol {
         fetchRequest.sortDescriptors = self.sortDescriptors
         
         //
-        fetchRequest.resultType = .DictionaryResultType
+        fetchRequest.resultType = .dictionaryResultType
         fetchRequest.returnsDistinctResults = self.returnsDistinctResults
         fetchRequest.propertiesToFetch = self.propertiesToFetch
         
