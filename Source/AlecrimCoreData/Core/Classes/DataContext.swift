@@ -253,7 +253,7 @@ public class ChildDataContext: ManagedObjectContext {
         super.addObservers()
         
         // the root data context did save
-        self.addObserver(name: NSNotification.Name.NSManagedObjectContextDidSave.rawValue, object: self.rootSavingDataContext) { [unowned self] notification in
+        self.addObserver(name: .NSManagedObjectContextDidSave, object: self.rootSavingDataContext) { [unowned self] notification in
             guard
                 self.enableMergeFromRootSavingDataContext && notification.object is RootSavingDataContext,
                 let changeNotificationData = (notification as NSNotification).userInfo
@@ -306,7 +306,7 @@ public class ManagedObjectContext: NSManagedObjectContext {
     /// Requires super.
     public func addObservers() {
         // this context will save
-        self.addObserver(name: NSNotification.Name.NSManagedObjectContextWillSave.rawValue, object: self) { notification in
+        self.addObserver(name: .NSManagedObjectContextWillSave, object: self) { notification in
             guard let notificationContext = notification.object as? NSManagedObjectContext where !notificationContext.insertedObjects.isEmpty else { return }
             
             do {
@@ -325,8 +325,8 @@ public class ManagedObjectContext: NSManagedObjectContext {
         }
     }
     
-    public final func addObserver(name: String, object: AnyObject, closure: (Notification) -> Void) {
-        let observer = NotificationCenter.default().addObserver(forName: NSNotification.Name(rawValue: name), object: object, queue: nil, using: closure)
+    public final func addObserver(name: NSNotification.Name, object: AnyObject, closure: (Notification) -> Void) {
+        let observer = NotificationCenter.default().addObserver(forName: name, object: object, queue: nil, using: closure)
         self.observers.append(observer)
     }
     
