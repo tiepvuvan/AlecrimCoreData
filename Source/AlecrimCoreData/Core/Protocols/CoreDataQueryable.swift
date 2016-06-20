@@ -15,7 +15,7 @@ public protocol CoreDataQueryable: GenericQueryable {
     
     var batchSize: Int { get set }
 
-    var dataContext: NSManagedObjectContext { get }
+    var context: NSManagedObjectContext { get }
     var entityDescription: NSEntityDescription { get }
 
     func toFetchRequest<ResultType: NSFetchRequestResult>() -> NSFetchRequest<ResultType>
@@ -28,7 +28,7 @@ extension CoreDataQueryable {
     
     public final func count() -> Int {
         do {
-            let c = try self.dataContext.count(for: self.toFetchRequest())
+            let c = try self.context.count(for: self.toFetchRequest())
             
             guard c != NSNotFound else {
                 return 0
@@ -90,7 +90,7 @@ extension CoreDataQueryable {
         fetchRequest.resultType = NSFetchRequestResultType.dictionaryResultType
         
         do {
-            let results = try self.dataContext.fetch(fetchRequest)
+            let results = try self.context.fetch(fetchRequest)
             
             guard let firstResult = results.first else { throw AlecrimCoreDataError.unexpectedValue(results) }
             guard let anyObjectValue = firstResult.value(forKey: expressionDescription.name) else { throw AlecrimCoreDataError.unexpectedValue(firstResult) }

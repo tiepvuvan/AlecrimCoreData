@@ -37,7 +37,7 @@ extension AttributeQueryProtocol {
         do {
             var results: [Self.Element] = []
             
-            let fetchRequestResult = try self.dataContext.fetch(self.toFetchRequest())
+            let fetchRequestResult = try self.context.fetch(self.toFetchRequest())
             guard let dicts = fetchRequestResult as? [NSDictionary] else { throw AlecrimCoreDataError.unexpectedValue(fetchRequestResult) }
             
             try dicts.forEach {
@@ -61,7 +61,7 @@ extension AttributeQueryProtocol where Self.Element: NSDictionary {
     
     public func toArray() -> [Self.Element] {
         do {
-            let fetchRequestResult = try self.dataContext.fetch(self.toFetchRequest())
+            let fetchRequestResult = try self.context.fetch(self.toFetchRequest())
             guard let dicts = fetchRequestResult as? [Self.Element] else { throw AlecrimCoreDataError.unexpectedValue(fetchRequestResult) }
             
             return dicts

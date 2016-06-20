@@ -11,24 +11,24 @@ import CoreData
 
 // MARK: -
 
-private var cachedEntityDescriptions = [String : NSEntityDescription]()
+private var cachedObjectDescriptions = [String : NSEntityDescription]()
 
-private func cachedEntityDescription(for dataContext: NSManagedObjectContext, managedObjectType: NSManagedObject.Type) -> NSEntityDescription {
-    let dataContextClassName = String(dataContext.dynamicType)
+private func cachedObjectDescription(for context: NSManagedObjectContext, managedObjectType: NSManagedObject.Type) -> NSEntityDescription {
+    let contextClassName = String(context.dynamicType)
     let managedObjectClassName = String(managedObjectType)
-    let cacheKey = "\(dataContextClassName)|\(managedObjectClassName)"
+    let cacheKey = "\(contextClassName)|\(managedObjectClassName)"
     
     let entityDescription: NSEntityDescription
     
-    if let cachedEntityDescription = cachedEntityDescriptions[cacheKey] {
-        entityDescription = cachedEntityDescription
+    if let cachedObjectDescription = cachedObjectDescriptions[cacheKey] {
+        entityDescription = cachedObjectDescription
     }
     else {
-        let persistentStoreCoordinator = dataContext.persistentStoreCoordinator!
+        let persistentStoreCoordinator = context.persistentStoreCoordinator!
         let managedObjectModel = persistentStoreCoordinator.managedObjectModel
         
         entityDescription = managedObjectModel.entities.filter({ $0.managedObjectClassName.components(separatedBy: ".").last! == managedObjectClassName }).first!
-        cachedEntityDescriptions[cacheKey] = entityDescription
+        cachedObjectDescriptions[cacheKey] = entityDescription
     }
     
     return entityDescription
@@ -41,19 +41,19 @@ public struct Table<T: NSManagedObject>: TableProtocol {
     
     public typealias Element = T
     
-    public let dataContext: NSManagedObjectContext
+    public let context: NSManagedObjectContext
     public let entityDescription: NSEntityDescription
     
     public var offset: Int = 0
     public var limit: Int = 0
-    public var batchSize: Int = DataContextOptions.defaultBatchSize
+    public var batchSize: Int = PersistentContainerOptions.defaultBatchSize
     
     public var predicate: Predicate? = nil
     public var sortDescriptors: [SortDescriptor]? = nil
     
-    public init(dataContext: NSManagedObjectContext) {
-        self.dataContext = dataContext
-        self.entityDescription = cachedEntityDescription(for: dataContext, managedObjectType: T.self)
+    public init(context: NSManagedObjectContext) {
+        self.context = context
+        self.entityDescription = cachedObjectDescription(for: context, managedObjectType: T.self)
     }
     
 }

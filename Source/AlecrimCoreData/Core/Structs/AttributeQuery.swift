@@ -13,12 +13,12 @@ public struct AttributeQuery<T: NSDictionary>: AttributeQueryProtocol {
     
     public typealias Element = T
     
-    public let dataContext: NSManagedObjectContext
+    public let context: NSManagedObjectContext
     public let entityDescription: NSEntityDescription
     
     public var offset: Int = 0
     public var limit: Int = 0
-    public var batchSize: Int = DataContextOptions.defaultBatchSize
+    public var batchSize: Int = PersistentContainerOptions.defaultBatchSize
     
     public var predicate: Predicate? = nil
     public var sortDescriptors: [SortDescriptor]? = nil
@@ -26,8 +26,8 @@ public struct AttributeQuery<T: NSDictionary>: AttributeQueryProtocol {
     public var returnsDistinctResults = false
     public var propertiesToFetch = [String]()
     
-    private init(dataContext: NSManagedObjectContext, entityDescription: NSEntityDescription, offset: Int, limit: Int, batchSize: Int, predicate: Predicate?, sortDescriptors: [SortDescriptor]?) {
-        self.dataContext = dataContext
+    private init(context: NSManagedObjectContext, entityDescription: NSEntityDescription, offset: Int, limit: Int, batchSize: Int, predicate: Predicate?, sortDescriptors: [SortDescriptor]?) {
+        self.context = context
         self.entityDescription = entityDescription
         
         self.offset = offset
@@ -46,7 +46,7 @@ extension Table {
     // one attribute
     public func select<P, A: AttributeProtocol where A.ValueType == P>(_ closure: @noescape (T.Type) -> A) -> AttributeQuery<P> {
         var attributeQuery = AttributeQuery<P>(
-            dataContext: self.dataContext,
+            context: self.context,
             entityDescription: self.entityDescription,
             offset: self.offset,
             limit: self.limit,
@@ -63,7 +63,7 @@ extension Table {
     // more than one attribute
     public func select(_ propertiesToFetch: [String]) -> AttributeQuery<NSDictionary> {
         var attributeQuery = AttributeQuery<NSDictionary>(
-            dataContext: self.dataContext,
+            context: self.context,
             entityDescription: self.entityDescription,
             offset: self.offset,
             limit: self.limit,

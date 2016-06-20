@@ -17,31 +17,31 @@ public protocol TableProtocol: CoreDataQueryable {
 
 extension TableProtocol where Self.Element: NSManagedObject {
     
-    public final func createEntity() -> Self.Element {
-        return Self.Element(entity: self.entityDescription, insertInto: self.dataContext)
+    public final func createObject() -> Self.Element {
+        return Self.Element(entity: self.entityDescription, insertInto: self.context)
     }
 
     public final func delete(_ entity: Self.Element) {
-        self.dataContext.delete(entity)
+        self.context.delete(entity)
     }
     
     public final func refresh(_ entity: Self.Element, mergeChanges: Bool = true) {
-        self.dataContext.refresh(entity, mergeChanges: mergeChanges)
+        self.context.refresh(entity, mergeChanges: mergeChanges)
     }
 
 }
 
 extension TableProtocol {
     
-    public final func deleteEntities() throws {
+    public final func deleteObjects() throws {
         let fetchRequest = self.toFetchRequest() as NSFetchRequest<NSManagedObjectID>
         fetchRequest.resultType = .managedObjectIDResultType
         
-        let objectIDs = try self.dataContext.fetch(fetchRequest)
+        let objectIDs = try self.context.fetch(fetchRequest)
         
         for objectID in objectIDs {
-            let object = try self.dataContext.existingObject(with: objectID)
-            self.dataContext.delete(object)
+            let object = try self.context.existingObject(with: objectID)
+            self.context.delete(object)
         }
     }
 
@@ -56,7 +56,7 @@ extension TableProtocol where Self.Element: NSManagedObject {
             return entity
         }
         else {
-            let entity = self.createEntity()
+            let entity = self.createObject()
             
             let attributeName = predicate.leftExpression.keyPath
             let value: AnyObject = predicate.rightExpression.constantValue!
@@ -78,7 +78,7 @@ extension TableProtocol {
         do {
             var results: [Self.Element] = []
             
-            let objects = try self.dataContext.fetch(self.toFetchRequest())
+            let objects = try self.context.fetch(self.toFetchRequest())
             
             if let entities = objects as? [Self.Element] {
                 results += entities

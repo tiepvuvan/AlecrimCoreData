@@ -11,7 +11,6 @@ import CoreData
 
 extension NSManagedObjectContext {
     
-    @available(OSX 10.10, iOS 8.0, *)
     internal func executeAsynchronousFetchRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>, completion completionHandler: ([AnyObject]?, NSError?) -> Void) throws {
         let asynchronousFetchRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { asynchronousFetchResult in
             completionHandler(asynchronousFetchResult.finalResult, asynchronousFetchResult.operationError)
@@ -30,7 +29,6 @@ extension NSManagedObjectContext {
 
 extension NSManagedObjectContext {
     
-    @available(OSX 10.10, iOS 8.0, *)
     internal func executeBatchUpdateRequest(entityDescription: NSEntityDescription, propertiesToUpdate: [NSObject : AnyObject], predicate: Predicate, completion completionHandler: (Int, ErrorProtocol?) -> Void) {
         let batchUpdateRequest = NSBatchUpdateRequest(entity: entityDescription)
         batchUpdateRequest.propertiesToUpdate = propertiesToUpdate
@@ -70,7 +68,6 @@ extension NSManagedObjectContext {
         }
     }
 
-    @available(OSX 10.11, iOS 9.0, *)
     internal func executeBatchDeleteRequest(entityDescription: NSEntityDescription, objectIDs: [NSManagedObjectID], completion completionHandler: (Int, ErrorProtocol?) -> Void) {
         let batchDeleteRequest = NSBatchDeleteRequest(objectIDs: objectIDs)
         batchDeleteRequest.resultType = .resultTypeCount

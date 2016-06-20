@@ -15,9 +15,6 @@ public enum AlecrimCoreDataError: ErrorProtocol {
     case notImplemented
     case notHandled
 
-    case invalidManagedObjectModelURL
-    case invalidPersistentStoreURL
-
     case unexpectedValue(Any)
     
     @noreturn

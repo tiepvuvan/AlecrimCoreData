@@ -11,7 +11,7 @@ import CoreData
 
 extension NSManagedObject {
 
-    public func inContext(otherContext: NSManagedObjectContext) throws -> Self {
+    public final func inContext(otherContext: NSManagedObjectContext) throws -> Self {
         if self.managedObjectContext === otherContext {
             return self
         }
