@@ -90,7 +90,7 @@ extension CoreDataQueryable {
         fetchRequest.resultType = NSFetchRequestResultType.dictionaryResultType
         
         do {
-            let results = try self.context.fetch(fetchRequest)
+            let results = try fetchRequest.execute()
             
             guard let firstResult = results.first else { throw AlecrimCoreDataError.unexpectedValue(results) }
             guard let anyObjectValue = firstResult.value(forKey: expressionDescription.name) else { throw AlecrimCoreDataError.unexpectedValue(firstResult) }

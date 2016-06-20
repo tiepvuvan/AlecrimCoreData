@@ -33,12 +33,11 @@ extension AttributeQueryProtocol {
 
 extension AttributeQueryProtocol {
     
-    public func toArray() -> [Self.Element] {
+    public func execute() -> [Self.Element] {
         do {
             var results: [Self.Element] = []
             
-            let fetchRequestResult = try self.context.fetch(self.toFetchRequest())
-            guard let dicts = fetchRequestResult as? [NSDictionary] else { throw AlecrimCoreDataError.unexpectedValue(fetchRequestResult) }
+            let dicts = try self.toFetchRequest().execute() as [NSDictionary]
             
             try dicts.forEach {
                 guard $0.count == 1, let value = $0.allValues.first as? Self.Element else {
@@ -59,12 +58,9 @@ extension AttributeQueryProtocol {
 
 extension AttributeQueryProtocol where Self.Element: NSDictionary {
     
-    public func toArray() -> [Self.Element] {
+    public func execute() -> [Self.Element] {
         do {
-            let fetchRequestResult = try self.context.fetch(self.toFetchRequest())
-            guard let dicts = fetchRequestResult as? [Self.Element] else { throw AlecrimCoreDataError.unexpectedValue(fetchRequestResult) }
-            
-            return dicts
+            return try self.toFetchRequest().execute() as [Self.Element]
         }
         catch let error {
             AlecrimCoreDataError.handleError(error)

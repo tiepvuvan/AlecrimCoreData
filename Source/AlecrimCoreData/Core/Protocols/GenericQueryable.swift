@@ -12,7 +12,7 @@ public protocol GenericQueryable: Queryable {
     
     associatedtype Element = Self.Iterator.Element
     
-    func toArray() -> [Self.Element]
+    func execute() -> [Self.Element]
 
 }
 
@@ -71,7 +71,7 @@ extension GenericQueryable {
 extension GenericQueryable {
     
     public final func first() -> Self.Element? {
-        return self.take(1).toArray().first
+        return self.take(1).execute().first
     }
     
 }
@@ -81,7 +81,7 @@ extension GenericQueryable {
 extension GenericQueryable {
     
     public final func makeIterator() -> AnyIterator<Self.Element> {
-        return AnyIterator(self.toArray().makeIterator())
+        return AnyIterator(self.execute().makeIterator())
     }
     
 }

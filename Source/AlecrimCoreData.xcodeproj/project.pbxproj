@@ -130,6 +130,7 @@
 		145D97211B5DA55C00995795 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				14A5017B1B6739F40057DD8B /* NSFetchedResultsControllerExtensions.swift */,
 				14A5016F1B671A400057DD8B /* NSManagedObjectContextExtensions.swift */,
 				145D97221B5DA55C00995795 /* NSManagedObjectExtensions.swift */,
 				145D97231B5DA55C00995795 /* PredicateExtensions.swift */,
@@ -166,7 +167,6 @@
 		14A501791B6737600057DD8B /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				14A5017B1B6739F40057DD8B /* NSFetchedResultsControllerExtensions.swift */,
 				14A501711B6732820057DD8B /* UITableViewExtensions.swift */,
 				14A501731B6733890057DD8B /* UICollectionViewExtensions.swift */,
 			);

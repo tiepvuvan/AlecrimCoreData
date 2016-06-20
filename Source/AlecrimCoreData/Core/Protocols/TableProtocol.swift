@@ -17,8 +17,8 @@ public protocol TableProtocol: CoreDataQueryable {
 
 extension TableProtocol where Self.Element: NSManagedObject {
     
-    public final func createObject() -> Self.Element {
-        return Self.Element(entity: self.entityDescription, insertInto: self.context)
+    public final func create() -> Self.Element {
+        return Self.Element(context: self.context)
     }
 
     public final func delete(_ entity: Self.Element) {
@@ -37,7 +37,7 @@ extension TableProtocol {
         let fetchRequest = self.toFetchRequest() as NSFetchRequest<NSManagedObjectID>
         fetchRequest.resultType = .managedObjectIDResultType
         
-        let objectIDs = try self.context.fetch(fetchRequest)
+        let objectIDs = try fetchRequest.execute()
         
         for objectID in objectIDs {
             let object = try self.context.existingObject(with: objectID)
@@ -56,7 +56,7 @@ extension TableProtocol where Self.Element: NSManagedObject {
             return entity
         }
         else {
-            let entity = self.createObject()
+            let entity = self.create()
             
             let attributeName = predicate.leftExpression.keyPath
             let value: AnyObject = predicate.rightExpression.constantValue!
@@ -74,24 +74,9 @@ extension TableProtocol where Self.Element: NSManagedObject {
 
 extension TableProtocol {
     
-    public final func toArray() -> [Self.Element] {
+    public final func execute() -> [Self.Element] {
         do {
-            var results: [Self.Element] = []
-            
-            let objects = try self.context.fetch(self.toFetchRequest())
-            
-            if let entities = objects as? [Self.Element] {
-                results += entities
-            }
-            else {
-                // HAX: the previous cast may not work in certain circumstances
-                try objects.forEach {
-                    guard let entity = $0 as? Self.Element else { throw AlecrimCoreDataError.unexpectedValue($0) }
-                    results.append(entity)
-                }
-            }
-            
-            return results
+            return try self.toFetchRequest().execute() as [Self.Element]
         }
         catch let error {
             AlecrimCoreDataError.handleError(error)
