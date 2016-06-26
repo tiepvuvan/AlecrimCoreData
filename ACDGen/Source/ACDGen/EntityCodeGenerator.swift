@@ -23,10 +23,10 @@ public final class EntityCodeGenerator: CodeGenerator {
         let string = NSMutableString()
         
         //
-        let className = self.entityDescription.managedObjectClassName.componentsSeparatedByString(".").last!
+        let className = self.entityDescription.managedObjectClassName.components(separatedBy: ".").last!
         
         // header
-        string.appendHeader(className, generated: false)
+        string.appendHeader(className, type: .class)
         
         // import
         string.appendLine("import Foundation")
@@ -34,7 +34,7 @@ public final class EntityCodeGenerator: CodeGenerator {
         string.appendLine()
         
         // class
-        let superClassName = (self.entityDescription.superentity == nil ? "NSManagedObject" : self.entityDescription.superentity!.managedObjectClassName.componentsSeparatedByString(".").last!)
+        let superClassName = (self.entityDescription.superentity == nil ? "NSManagedObject" : self.entityDescription.superentity!.managedObjectClassName.components(separatedBy: ".").last!)
         
         string.appendLine(self.parameters.accessModifier + "class \(className): \(superClassName) {")
         string.appendLine()
@@ -42,6 +42,6 @@ public final class EntityCodeGenerator: CodeGenerator {
         string.appendLine()
         
         // save
-        try self.saveSourceCodeFileWithName(className, contents: string as String, generated: false)
+        try self.saveSourceCodeFile(withName: className, contents: string as String, type: .class)
     }
 }

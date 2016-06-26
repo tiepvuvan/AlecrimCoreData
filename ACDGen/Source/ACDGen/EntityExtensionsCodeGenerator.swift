@@ -30,74 +30,93 @@ public final class EntityExtensionsCodeGenerator: CodeGenerator {
         self.entityDescription = entityDescription
         
         //
-        self.className = self.entityDescription.managedObjectClassName.componentsSeparatedByString(".").last!
+        self.className = self.entityDescription.managedObjectClassName.components(separatedBy: ".").last!
         
         //
         self.attributes = self.entityDescription.attributesByName
-        self.attributeKeys = self.attributes.keys.sort({ $0 < $1 })
+        self.attributeKeys = self.attributes.keys.sorted(isOrderedBefore: { $0 < $1 })
         
         //
         self.relationships = self.entityDescription.relationshipsByName
-        self.relationshipKeys = self.relationships.keys.sort({ $0 < $1 })
+        self.relationshipKeys = self.relationships.keys.sorted(isOrderedBefore: { $0 < $1 })
     }
     
     public func generate() throws {
-        // entity
-        self.generateHeader()
+        try self.generatePropertiesFile()
+        
+        if self.parameters.generateQueryAttributes {
+            try self.generateQueryAttributesFile()
+        }
+    }
+    
+    private func generatePropertiesFile() throws {
+        self.string.setString("")
+        
+        self.generateHeader(type: .properties)
+        self.generateExtensionHeader()
         self.generateAttributes()
         self.generateToOneRelationships()
         self.generateToManyRelationships()
         self.generateFetchedProperties()
         self.generateFetchRequestTemplates()
+        self.generateExtensionFooter()
         self.generateFooter()
         
-        // query attributes
-        if self.parameters.generateQueryAttributes {
-            self.generateClassQueryAttributes()
-            self.generateInstanceQueryAttributes()
-        }
+        try self.saveSourceCodeFile(withName: self.className, contents: self.string as String, type: .properties)
+    }
+    
+    private func generateQueryAttributesFile() throws {
+        self.string.setString("")
         
-        // data context extension
+        self.generateHeader(type: .attributes)
+        
+        self.generateClassQueryAttributes()
+        self.generateInstanceQueryAttributes()
+        
         if self.parameters.dataContextName != "" {
             self.generateDataContextExtension()
         }
         
-        // one more line
-        self.string.appendLine()
+        self.generateFooter()
         
-        // save
-        try self.saveSourceCodeFileWithName(self.className, contents: self.string as String, generated: true)
+        try self.saveSourceCodeFile(withName: self.className, contents: self.string as String, type: .attributes)
     }
     
 }
 
 extension EntityExtensionsCodeGenerator {
     
-    private func generateHeader() {
+    private func generateHeader(type: SourceCodeFileType) {
         // header
-        self.string.appendHeader(self.className, generated: true)
+        self.string.appendHeader(self.className, type: type)
         
         // import
         self.string.appendLine("import Foundation")
         self.string.appendLine("import CoreData")
         
-        if self.parameters.dataContextName != "" || self.parameters.generateQueryAttributes {
+        if type == .attributes && (self.parameters.dataContextName != "" || self.parameters.generateQueryAttributes) {
             self.string.appendLine()
             self.string.appendLine("import AlecrimCoreData")
         }
         
         self.string.appendLine()
-        
-        // extension declaration
+    }
+    
+    private func generateExtensionHeader() {
         self.string.appendLine("// MARK: - \(self.className) properties")
         self.string.appendLine()
         self.string.appendLine("extension \(self.className) {")
         self.string.appendLine()
     }
     
-    private func generateFooter() {
+    private func generateExtensionFooter() {
         self.string.appendLine()
         self.string.appendLine("}")
+    }
+
+    
+    private func generateFooter() {
+        self.string.appendLine()
     }
     
 }
@@ -112,13 +131,13 @@ extension EntityExtensionsCodeGenerator {
             }
             
             let name = attribute.name
-            let valueClassName = self.valueClassNameForAttributeDescription(attribute)
+            let valueClassName = self.valueClassName(for: attribute)
             
-            if (self.parameters.useScalarProperties && attribute.optional && !self.canMarkScalarAsOptionalForAttributeDescription(attribute)) {
+            if (self.parameters.useScalarProperties && attribute.isOptional && !self.canMarkScalarAsOptional(for: attribute)) {
                 self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "var \(name): \(valueClassName) // cannot mark as optional because Objective-C compatibility issues", indentLevel: 1)
             }
             else {
-                let optionalStr = (attribute.optional ? "?" : "")
+                let optionalStr = (attribute.isOptional ? "?" : "")
                 self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "var \(name): \(valueClassName)\(optionalStr)", indentLevel: 1)
             }
         }
@@ -133,15 +152,15 @@ extension EntityExtensionsCodeGenerator {
                 continue
             }
             
-            if !relationship.toMany {
+            if !relationship.isToMany {
                 if !addedSeparator {
                     self.string.appendLine()
                     addedSeparator = true
                 }
                 
                 let name = relationship.name
-                let valueClassName = relationship.destinationEntity!.managedObjectClassName.componentsSeparatedByString(".").last!
-                let optionalStr = (relationship.optional ? "?" : "")
+                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
+                let optionalStr = (relationship.isOptional ? "?" : "")
                 
                 self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "var \(name): \(valueClassName)\(optionalStr)", indentLevel: 1)
             }
@@ -158,16 +177,16 @@ extension EntityExtensionsCodeGenerator {
                 continue
             }
             
-            if relationship.toMany {
+            if relationship.isToMany {
                 if !addedSeparator {
                     self.string.appendLine()
                     addedSeparator = true
                 }
                 
                 let name = relationship.name
-                let valueClassName = relationship.destinationEntity!.managedObjectClassName.componentsSeparatedByString(".").last!
+                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
                 
-                if relationship.ordered {
+                if relationship.isOrdered {
                     if self.parameters.useScalarProperties {
                         self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "var \(name): NSOrderedSet // Swift does not have an OrderedSet<> yet", indentLevel: 1)
                     }
@@ -194,7 +213,7 @@ extension EntityExtensionsCodeGenerator {
                 continue
             }
             
-            if relationship.toMany {
+            if relationship.isToMany {
                 if !addedSeparator {
                     self.string.appendLine()
                     self.string.appendLine("}")
@@ -208,9 +227,9 @@ extension EntityExtensionsCodeGenerator {
                 self.string.appendLine()
                 
                 let name = relationship.name
-                let capitalizedName = (name as NSString).substringToIndex(1).uppercaseString + (name as NSString).substringFromIndex(1)
+                let capitalizedName = (name as NSString).substring(to: 1).uppercased() + (name as NSString).substring(from: 1)
                 
-                let valueClassName = relationship.destinationEntity!.managedObjectClassName.componentsSeparatedByString(".").last!
+                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
                 
                 self.string.appendLine("@NSManaged " + "private " + "func add\(capitalizedName)Object(object: \(valueClassName))", indentLevel: 1)
                 self.string.appendLine("@NSManaged " + "private " + "func remove\(capitalizedName)Object(object: \(valueClassName))", indentLevel: 1)
@@ -233,15 +252,15 @@ extension EntityExtensionsCodeGenerator {
                 continue
             }
             
-            if relationship.toMany {
+            if relationship.isToMany {
                 self.string.appendLine()
                 
                 let name = relationship.name
-                let capitalizedName = (name as NSString).substringToIndex(1).uppercaseString + (name as NSString).substringFromIndex(1)
+                let capitalizedName = (name as NSString).substring(to: 1).uppercased() + (name as NSString).substring(from: 1)
                 let singularName = name.camelCaseSingularized()
-                let capitalizedSingularName = (singularName as NSString).substringToIndex(1).uppercaseString + (singularName as NSString).substringFromIndex(1)
+                let capitalizedSingularName = (singularName as NSString).substring(to: 1).uppercased() + (singularName as NSString).substring(from: 1)
                 
-                let valueClassName = relationship.destinationEntity!.managedObjectClassName.componentsSeparatedByString(".").last!
+                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
                 
                 self.string.appendLine(self.parameters.accessModifier + "func add\(capitalizedSingularName)(\(singularName): \(valueClassName)) { self.add\(capitalizedName)Object(\(singularName)) }", indentLevel: 1)
                 self.string.appendLine(self.parameters.accessModifier + "func remove\(capitalizedSingularName)(\(singularName): \(valueClassName)) { self.remove\(capitalizedName)Object(\(singularName)) }", indentLevel: 1)
@@ -252,7 +271,7 @@ extension EntityExtensionsCodeGenerator {
     private func generateFetchedProperties() {
         var addedSeparator = false
         
-        let fetchedProperties = (self.entityDescription.properties.filter({ $0 is NSFetchedPropertyDescription }) as! [NSFetchedPropertyDescription]).sort { $0.name < $1.name }
+        let fetchedProperties = (self.entityDescription.properties.filter({ $0 is NSFetchedPropertyDescription }) as! [NSFetchedPropertyDescription]).sorted { $0.name < $1.name }
         for fetchedProperty in fetchedProperties {
             if self.isInheritedPropertyDescription(fetchedProperty) {
                 continue
@@ -264,7 +283,7 @@ extension EntityExtensionsCodeGenerator {
             }
             
             let name = fetchedProperty.name
-            let valueClassName = fetchedProperty.entity.managedObjectClassName.componentsSeparatedByString(".").last!
+            let valueClassName = fetchedProperty.entity.managedObjectClassName.components(separatedBy: ".").last!
             
             self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "let \(name): [\(valueClassName)]", indentLevel: 1)
         }
@@ -296,13 +315,13 @@ extension EntityExtensionsCodeGenerator {
     private func generateClassQueryAttributesForAttributes() {
         for attributeKey in self.attributeKeys {
             let attribute = self.attributes[attributeKey]!
-            if self.isInheritedPropertyDescription(attribute) || attribute.transient {
+            if self.isInheritedPropertyDescription(attribute) || attribute.isTransient {
                 continue
             }
             
             let name = attribute.name
-            let valueClassName = self.valueClassNameForAttributeDescription(attribute)
-            let attributeClassName = (attribute.optional ? CodeGeneratorParameters.nullableAttributeClassName : CodeGeneratorParameters.nonNullableAttributeClassName)
+            let valueClassName = self.valueClassName(for: attribute)
+            let attributeClassName = (attribute.isOptional ? CodeGeneratorParameters.nullableAttributeClassName : CodeGeneratorParameters.nonNullableAttributeClassName)
             let optionalStr = "" // (attribute.optional ? "?" : "")
             
             self.string.appendLine(self.parameters.accessModifier + "static let \(name) = \(attributeClassName)<\(valueClassName)\(optionalStr)>(\"\(name)\")", indentLevel: 1)
@@ -314,19 +333,19 @@ extension EntityExtensionsCodeGenerator {
         
         for relationshipKey in self.relationshipKeys {
             let relationship = self.relationships[relationshipKey]!
-            if self.isInheritedPropertyDescription(relationship) || relationship.transient {
+            if self.isInheritedPropertyDescription(relationship) || relationship.isTransient {
                 continue
             }
             
-            if !relationship.toMany {
+            if !relationship.isToMany {
                 if !addedSeparator {
                     string.appendLine()
                     addedSeparator = true
                 }
                 
                 let name = relationship.name
-                let valueClassName = relationship.destinationEntity!.managedObjectClassName.componentsSeparatedByString(".").last!
-                let attributeClassName = (relationship.optional ? CodeGeneratorParameters.nullableAttributeClassName : CodeGeneratorParameters.nonNullableAttributeClassName)
+                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
+                let attributeClassName = (relationship.isOptional ? CodeGeneratorParameters.nullableAttributeClassName : CodeGeneratorParameters.nonNullableAttributeClassName)
                 let optionalStr = "" // (relationship.optional ? "?" : "")
                 
                 self.string.appendLine(self.parameters.accessModifier + "static let \(name) = \(attributeClassName)<\(valueClassName)\(optionalStr)>(\"\(name)\")", indentLevel: 1)
@@ -339,21 +358,21 @@ extension EntityExtensionsCodeGenerator {
         
         for relationshipKey in self.relationshipKeys {
             let relationship = self.relationships[relationshipKey]!
-            if self.isInheritedPropertyDescription(relationship) || relationship.transient {
+            if self.isInheritedPropertyDescription(relationship) || relationship.isTransient {
                 continue
             }
             
-            if relationship.toMany {
+            if relationship.isToMany {
                 if !addedSeparator {
                     string.appendLine()
                     addedSeparator = true
                 }
                 
                 let name = relationship.name
-                let valueClassName = relationship.destinationEntity!.managedObjectClassName.componentsSeparatedByString(".").last!
+                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
                 let attributeClassName = CodeGeneratorParameters.nonNullableAttributeClassName // (relationship.optional ? self.nullableAttributeClassName : self.nonNullableAttributeClassName)
                 
-                if relationship.ordered {
+                if relationship.isOrdered {
                     self.string.appendLine(self.parameters.accessModifier + "static let \(name) = \(attributeClassName)<NSOrderedSet>(\"\(name)\")", indentLevel: 1)
                 }
                 else {
@@ -396,13 +415,13 @@ extension EntityExtensionsCodeGenerator {
     private func generateInstanceQueryAttributesForAttributes() {
         for attributeKey in self.attributeKeys {
             let attribute = self.attributes[attributeKey]!
-            if self.isInheritedPropertyDescription(attribute) || attribute.transient {
+            if self.isInheritedPropertyDescription(attribute) || attribute.isTransient {
                 continue
             }
             
             let name = attribute.name
-            let valueClassName = self.valueClassNameForAttributeDescription(attribute)
-            let attributeClassName = (attribute.optional ? CodeGeneratorParameters.nullableAttributeClassName : CodeGeneratorParameters.nonNullableAttributeClassName)
+            let valueClassName = self.valueClassName(for: attribute)
+            let attributeClassName = (attribute.isOptional ? CodeGeneratorParameters.nullableAttributeClassName : CodeGeneratorParameters.nonNullableAttributeClassName)
             let optionalStr = "" // (attribute.optional ? "?" : "")
             
             string.appendLine(self.parameters.accessModifier + "var \(name): \(attributeClassName)<\(valueClassName)\(optionalStr)> { return \(attributeClassName)<\(valueClassName)\(optionalStr)>(\"\(name)\", self) }", indentLevel: 1)
@@ -414,19 +433,19 @@ extension EntityExtensionsCodeGenerator {
         
         for relationshipKey in self.relationshipKeys {
             let relationship = self.relationships[relationshipKey]!
-            if self.isInheritedPropertyDescription(relationship) || relationship.transient {
+            if self.isInheritedPropertyDescription(relationship) || relationship.isTransient {
                 continue
             }
             
-            if !relationship.toMany {
+            if !relationship.isToMany {
                 if !addedSeparator {
                     string.appendLine()
                     addedSeparator = true
                 }
                 
                 let name = relationship.name
-                let valueClassName = relationship.destinationEntity!.managedObjectClassName.componentsSeparatedByString(".").last!
-                let attributeClassName = (relationship.optional ? CodeGeneratorParameters.nullableAttributeClassName : CodeGeneratorParameters.nonNullableAttributeClassName)
+                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
+                let attributeClassName = (relationship.isOptional ? CodeGeneratorParameters.nullableAttributeClassName : CodeGeneratorParameters.nonNullableAttributeClassName)
                 let optionalStr = "" // (relationship.optional ? "?" : "")
                 
                 self.string.appendLine(self.parameters.accessModifier + "var \(name): \(attributeClassName)<\(valueClassName)\(optionalStr)> { return \(attributeClassName)<\(valueClassName)\(optionalStr)>(\"\(name)\", self) }", indentLevel: 1)
@@ -439,21 +458,21 @@ extension EntityExtensionsCodeGenerator {
         
         for relationshipKey in self.relationshipKeys {
             let relationship = self.relationships[relationshipKey]!
-            if self.isInheritedPropertyDescription(relationship) || relationship.transient {
+            if self.isInheritedPropertyDescription(relationship) || relationship.isTransient {
                 continue
             }
             
-            if relationship.toMany {
+            if relationship.isToMany {
                 if !addedSeparator {
                     string.appendLine()
                     addedSeparator = true
                 }
                 
                 let name = relationship.name
-                let valueClassName = relationship.destinationEntity!.managedObjectClassName.componentsSeparatedByString(".").last!
+                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
                 let attributeClassName = CodeGeneratorParameters.nonNullableAttributeClassName // (relationship.optional ? self.nullableAttributeClassName : self.nonNullableAttributeClassName)
                 
-                if relationship.ordered {
+                if relationship.isOrdered {
                     self.string.appendLine(self.parameters.accessModifier + "var \(name): \(attributeClassName)<NSOrderedSet> { return \(attributeClassName)<NSOrderedSet>(\"\(name)\", self) }", indentLevel: 1)
                 }
                 else {

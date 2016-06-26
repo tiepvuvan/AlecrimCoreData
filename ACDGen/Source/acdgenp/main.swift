@@ -58,14 +58,14 @@ catch {
 
 // MARK: - URL options
 
-let fm = NSFileManager.defaultManager()
+let fm = FileManager.default()
 
 //
 
-let dataModelFileURL = NSURL(fileURLWithPath: dataModelFileURLOption.value!)
+let dataModelFileURL = URL(fileURLWithPath: dataModelFileURLOption.value!)
 
 var isDataModelFileURLDirectory: ObjCBool = false
-if !fm.fileExistsAtPath(dataModelFileURL.path!, isDirectory: &isDataModelFileURLDirectory) {
+if !fm.fileExists(atPath: dataModelFileURL.path!, isDirectory: &isDataModelFileURLDirectory) {
     printHeader()
     print("Core data model file not found.")
     printFooter()
@@ -74,10 +74,10 @@ if !fm.fileExistsAtPath(dataModelFileURL.path!, isDirectory: &isDataModelFileURL
 }
 
 //
-let targetFolderURL = NSURL(fileURLWithPath: targetFolderURLOption.value!)
+let targetFolderURL = URL(fileURLWithPath: targetFolderURLOption.value!)
 
 var isTargetFolderURLDirectory: ObjCBool = true
-if !fm.fileExistsAtPath(targetFolderURL.path!, isDirectory: &isTargetFolderURLDirectory) {
+if !fm.fileExists(atPath: targetFolderURL.path!, isDirectory: &isTargetFolderURLDirectory) {
     printHeader()
     print("Target folder not found.")
     printFooter()
@@ -96,7 +96,7 @@ if !isTargetFolderURLDirectory {
 //
 let dataContextName = dataContextNameOption.value ?? ""
 
-if dataContextName.containsString(" ") {
+if dataContextName.contains(" ") {
     printHeader()
     print("Data context class name cannot contain spaces.")
     printFooter()
@@ -117,7 +117,7 @@ do {
     let parameters = CodeGeneratorParameters(
         dataModelFileURL: dataModelFileURL,
         targetFolderURL: targetFolderURL,
-        dataContextName: dataContextName.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()),
+        dataContextName: dataContextName.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),
         useScalarProperties: useScalarProperties,
         useSwiftString: useSwiftString,
         generateQueryAttributes: generateQueryAttributes,

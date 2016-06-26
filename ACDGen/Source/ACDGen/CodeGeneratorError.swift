@@ -8,8 +8,8 @@
 
 import Foundation
 
-public enum CodeGeneratorErrors: ErrorType {
-    case MOMCToolNotFound
-    case MOMCToolCallFailed
-    case TemporaryManagedObjectModelCreationFailed
+public enum CodeGeneratorError: ErrorProtocol {
+    case momcToolNotFound
+    case momcToolCallFailed
+    case temporaryManagedObjectModelCreationFailed
 }

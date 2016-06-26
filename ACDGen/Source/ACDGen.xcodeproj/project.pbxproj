@@ -10,7 +10,7 @@
 		140828A31B56D719008FCD94 /* ACDGen+StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140828A21B56D719008FCD94 /* ACDGen+StringExtensions.swift */; };
 		140828A51B56D76D008FCD94 /* ACDGen+NSMutableStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140828A41B56D76D008FCD94 /* ACDGen+NSMutableStringExtensions.swift */; };
 		146F30B61B9E03A900778549 /* EntityExtensionsCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F30B51B9E03A900778549 /* EntityExtensionsCodeGenerator.swift */; };
-		146F30B81B9E050A00778549 /* CodeGeneratorErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F30B71B9E050A00778549 /* CodeGeneratorErrors.swift */; };
+		146F30B81B9E050A00778549 /* CodeGeneratorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F30B71B9E050A00778549 /* CodeGeneratorError.swift */; };
 		1470290A1B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147029091B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift */; };
 		147C8C531B9DF70C00C2CEDB /* EntityCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C8C521B9DF70C00C2CEDB /* EntityCodeGenerator.swift */; };
 		147C8C551B9DF77500C2CEDB /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C8C541B9DF77500C2CEDB /* CodeGenerator.swift */; };
@@ -20,7 +20,7 @@
 		14CF9E681CA5052400594115 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CF9E651CA5052400594115 /* StringExtensions.swift */; };
 		14CF9E691CA5054C00594115 /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C8C541B9DF77500C2CEDB /* CodeGenerator.swift */; };
 		14CF9E6A1CA5054C00594115 /* CodeGeneratorParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147029091B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift */; };
-		14CF9E6B1CA5054C00594115 /* CodeGeneratorErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F30B71B9E050A00778549 /* CodeGeneratorErrors.swift */; };
+		14CF9E6B1CA5054C00594115 /* CodeGeneratorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F30B71B9E050A00778549 /* CodeGeneratorError.swift */; };
 		14CF9E6C1CA5054C00594115 /* ModelCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E7ABE31AA230F300E0AA37 /* ModelCodeGenerator.swift */; };
 		14CF9E6D1CA5054C00594115 /* EntityCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C8C521B9DF70C00C2CEDB /* EntityCodeGenerator.swift */; };
 		14CF9E6E1CA5054C00594115 /* EntityExtensionsCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146F30B51B9E03A900778549 /* EntityExtensionsCodeGenerator.swift */; };
@@ -49,7 +49,7 @@
 		140828A21B56D719008FCD94 /* ACDGen+StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ACDGen+StringExtensions.swift"; sourceTree = "<group>"; };
 		140828A41B56D76D008FCD94 /* ACDGen+NSMutableStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ACDGen+NSMutableStringExtensions.swift"; sourceTree = "<group>"; };
 		146F30B51B9E03A900778549 /* EntityExtensionsCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityExtensionsCodeGenerator.swift; sourceTree = "<group>"; };
-		146F30B71B9E050A00778549 /* CodeGeneratorErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorErrors.swift; sourceTree = "<group>"; };
+		146F30B71B9E050A00778549 /* CodeGeneratorError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorError.swift; sourceTree = "<group>"; };
 		147029091B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorParameters.swift; sourceTree = "<group>"; };
 		147C8C521B9DF70C00C2CEDB /* EntityCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityCodeGenerator.swift; sourceTree = "<group>"; };
 		147C8C541B9DF77500C2CEDB /* CodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGenerator.swift; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 			children = (
 				147C8C541B9DF77500C2CEDB /* CodeGenerator.swift */,
 				147029091B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift */,
-				146F30B71B9E050A00778549 /* CodeGeneratorErrors.swift */,
+				146F30B71B9E050A00778549 /* CodeGeneratorError.swift */,
 				14E7ABE31AA230F300E0AA37 /* ModelCodeGenerator.swift */,
 				147C8C521B9DF70C00C2CEDB /* EntityCodeGenerator.swift */,
 				146F30B51B9E03A900778549 /* EntityExtensionsCodeGenerator.swift */,
@@ -220,15 +220,18 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Alecrim;
 				TargetAttributes = {
 					14CF9E591CA504B000594115 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					14E7ABC01AA2270100E0AA37 = {
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = 89GFVQ5PK6;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -270,7 +273,7 @@
 			files = (
 				14CF9E701CA5055100594115 /* ACDGen+StringExtensions.swift in Sources */,
 				14CF9E6A1CA5054C00594115 /* CodeGeneratorParameters.swift in Sources */,
-				14CF9E6B1CA5054C00594115 /* CodeGeneratorErrors.swift in Sources */,
+				14CF9E6B1CA5054C00594115 /* CodeGeneratorError.swift in Sources */,
 				14CF9E681CA5052400594115 /* StringExtensions.swift in Sources */,
 				14CF9E5D1CA504B000594115 /* main.swift in Sources */,
 				14CF9E691CA5054C00594115 /* CodeGenerator.swift in Sources */,
@@ -288,7 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140828A51B56D76D008FCD94 /* ACDGen+NSMutableStringExtensions.swift in Sources */,
-				146F30B81B9E050A00778549 /* CodeGeneratorErrors.swift in Sources */,
+				146F30B81B9E050A00778549 /* CodeGeneratorError.swift in Sources */,
 				140828A31B56D719008FCD94 /* ACDGen+StringExtensions.swift in Sources */,
 				14E7ABE41AA230F300E0AA37 /* ModelCodeGenerator.swift in Sources */,
 				146F30B61B9E03A900778549 /* EntityExtensionsCodeGenerator.swift in Sources */,
@@ -318,8 +321,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -327,8 +331,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -369,7 +375,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -407,7 +413,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -424,6 +430,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alecrim.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = 89GFVQ5PK6/;
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -439,6 +447,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alecrim.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = 89GFVQ5PK6/;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
