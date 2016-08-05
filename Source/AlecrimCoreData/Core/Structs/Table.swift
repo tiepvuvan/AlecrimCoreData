@@ -48,8 +48,8 @@ public struct Table<T: NSManagedObject>: TableProtocol {
     public var limit: Int = 0
     public var batchSize: Int = PersistentContainerOptions.defaultBatchSize
     
-    public var predicate: Predicate? = nil
-    public var sortDescriptors: [SortDescriptor]? = nil
+    public var predicate: NSPredicate? = nil
+    public var sortDescriptors: [NSSortDescriptor]? = nil
     
     public init(context: NSManagedObjectContext) {
         self.context = context

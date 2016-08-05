@@ -49,7 +49,7 @@ extension TableProtocol {
 
 extension TableProtocol where Self.Element: NSManagedObject {
     
-    public final func firstOrCreated(_ predicateClosure: @noescape (Self.Element.Type) -> ComparisonPredicate) -> Self.Element {
+    public final func firstOrCreated(_ predicateClosure: @noescape (Self.Element.Type) -> NSComparisonPredicate) -> Self.Element {
         let predicate = predicateClosure(Self.Element.self)
         
         if let entity = self.filter(using: predicate).first() {

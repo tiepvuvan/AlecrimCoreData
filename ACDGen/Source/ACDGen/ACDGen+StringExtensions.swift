@@ -279,11 +279,11 @@ extension String {
                 }
                 
                 for (rule, replacement) in Array(self.pluralRules.reversed()) {
-                    let regex = try! RegularExpression(pattern: rule, options: RegularExpression.Options())
+                    let regex = try! NSRegularExpression(pattern: rule, options: NSRegularExpression.Options())
                     let range = NSMakeRange(0, (loweredStr as NSString).length)
                     
-                    if regex.firstMatch(in: loweredStr, options: RegularExpression.MatchingOptions(), range: range) != nil {
-                        return regex.stringByReplacingMatches(in: loweredStr, options: RegularExpression.MatchingOptions(), range: range, withTemplate: replacement)
+                    if regex.firstMatch(in: loweredStr, options: NSRegularExpression.MatchingOptions(), range: range) != nil {
+                        return regex.stringByReplacingMatches(in: loweredStr, options: NSRegularExpression.MatchingOptions(), range: range, withTemplate: replacement)
                     }
                 }
             }
@@ -309,11 +309,11 @@ extension String {
                 }
                 
                 for (rule, replacement) in Array(self.singularRules.reversed()) {
-                    let regex = try! RegularExpression(pattern: rule, options: RegularExpression.Options())
+                    let regex = try! NSRegularExpression(pattern: rule, options: NSRegularExpression.Options())
                     let range = NSMakeRange(0, (loweredStr as NSString).length)
                     
-                    if regex.firstMatch(in: loweredStr, options: RegularExpression.MatchingOptions(), range: range) != nil {
-                        return regex.stringByReplacingMatches(in: loweredStr, options: RegularExpression.MatchingOptions(), range: range, withTemplate: replacement)
+                    if regex.firstMatch(in: loweredStr, options: NSRegularExpression.MatchingOptions(), range: range) != nil {
+                        return regex.stringByReplacingMatches(in: loweredStr, options: NSRegularExpression.MatchingOptions(), range: range, withTemplate: replacement)
                     }
                 }
             }
@@ -379,7 +379,7 @@ extension String {
     }
 
     private func componentsSeparatedByCapitalizedLetters() -> [String] {
-        let newStr = (self as NSString).replacingOccurrences(of: "([a-z])([A-Z])", with: "$1 $2", options: NSString.CompareOptions.regularExpressionSearch, range: NSMakeRange(0, (self as NSString).length))
+        let newStr = (self as NSString).replacingOccurrences(of: "([a-z])([A-Z])", with: "$1 $2", options: NSString.CompareOptions.regularExpression, range: NSMakeRange(0, (self as NSString).length))
         return newStr.components(separatedBy: " ")
     }
     

@@ -21,7 +21,7 @@ public final class ModelCodeGenerator: CodeGenerator {
     
     deinit {
         if !self.tempFileURLs.isEmpty {
-            let fileManager = FileManager.default()
+            let fileManager = FileManager.default
             
             for url in self.tempFileURLs {
                 do {
@@ -56,13 +56,13 @@ extension ModelCodeGenerator {
 
     private func createTemporaryManagedObjectModel() throws -> NSManagedObjectModel {
         let launchPath = "/Applications/Xcode.app/Contents/Developer/usr/bin/momc"
-        guard FileManager.default().fileExists(atPath: launchPath) else { throw CodeGeneratorError.momcToolNotFound }
+        guard FileManager.default.fileExists(atPath: launchPath) else { throw CodeGeneratorError.momcToolNotFound }
         
         var arguments = [String]()
         let supportedOptions = ["MOMC_NO_WARNINGS", "MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS", "MOMC_SUPPRESS_INVERSE_TRANSIENT_ERROR"]
         
         for supportedOption in supportedOptions {
-            if (ProcessInfo.processInfo().environment as NSDictionary).object(forKey: supportedOption) != nil {
+            if (ProcessInfo.processInfo.environment as NSDictionary).object(forKey: supportedOption) != nil {
                 arguments.append("-\(supportedOption)")
             }
         }
@@ -73,7 +73,7 @@ extension ModelCodeGenerator {
         guard let tempFileURL = URL(string: tempFilePath) else { throw CodeGeneratorError.temporaryManagedObjectModelCreationFailed }
         self.tempFileURLs.append(tempFileURL)
         
-        arguments.append(self.parameters.dataModelFileURL.path!)
+        arguments.append(self.parameters.dataModelFileURL.path)
         arguments.append(tempFilePath)
         
         let task = Task.launchedTask(withLaunchPath: launchPath, arguments: arguments)

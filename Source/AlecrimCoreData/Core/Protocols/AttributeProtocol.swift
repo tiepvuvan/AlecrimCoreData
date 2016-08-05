@@ -73,12 +73,12 @@ extension AttributeProtocol {
 
 extension AttributeProtocol {
 
-    internal final var ___comparisonPredicateOptions: ComparisonPredicate.Options {
+    internal final var ___comparisonPredicateOptions: NSComparisonPredicate.Options {
         if Self.ValueType.self is AlecrimCoreData.StringProtocol.Type {
             return PersistentContainerOptions.defaultComparisonPredicateOptions
         }
         else {
-            return ComparisonPredicate.Options()
+            return NSComparisonPredicate.Options()
         }
     }
     
@@ -88,8 +88,8 @@ extension AttributeProtocol {
 
 extension AttributeProtocol where Self.ValueType: Equatable {
     
-    public final func isEqualTo(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isEqualTo(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -98,8 +98,8 @@ extension AttributeProtocol where Self.ValueType: Equatable {
         )
     }
     
-    public final func isEqualTo<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isEqualTo<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: otherAttribute.___expression,
             modifier: .direct,
@@ -108,8 +108,8 @@ extension AttributeProtocol where Self.ValueType: Equatable {
         )
     }
 
-    public final func isNotEqualTo(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isNotEqualTo(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -118,8 +118,8 @@ extension AttributeProtocol where Self.ValueType: Equatable {
         )
     }
     
-    public final func isNotEqualTo<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isNotEqualTo<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: otherAttribute.___expression,
             modifier: .direct,
@@ -132,8 +132,8 @@ extension AttributeProtocol where Self.ValueType: Equatable {
 
 extension NullableAttributeProtocol where Self.ValueType: Equatable {
     
-    public final func isEqualTo(_ value: ValueType?) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isEqualTo(_ value: ValueType?) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -142,8 +142,8 @@ extension NullableAttributeProtocol where Self.ValueType: Equatable {
         )
     }
     
-    public final func isNotEqualTo(_ value: ValueType?) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isNotEqualTo(_ value: ValueType?) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -156,8 +156,8 @@ extension NullableAttributeProtocol where Self.ValueType: Equatable {
 
 extension AttributeProtocol where Self.ValueType: Comparable {
 
-    public final func isGreaterThan(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isGreaterThan(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -166,8 +166,8 @@ extension AttributeProtocol where Self.ValueType: Comparable {
         )
     }
     
-    public final func isGreaterThan<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isGreaterThan<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: otherAttribute.___expression,
             modifier: .direct,
@@ -176,8 +176,8 @@ extension AttributeProtocol where Self.ValueType: Comparable {
         )
     }
 
-    public final func isGreaterThanOrEqualTo(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isGreaterThanOrEqualTo(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -186,8 +186,8 @@ extension AttributeProtocol where Self.ValueType: Comparable {
         )
     }
     
-    public final func isGreaterThanOrEqualTo<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isGreaterThanOrEqualTo<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: otherAttribute.___expression,
             modifier: .direct,
@@ -196,8 +196,8 @@ extension AttributeProtocol where Self.ValueType: Comparable {
         )
     }
 
-    public final func isLessThan(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isLessThan(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -206,8 +206,8 @@ extension AttributeProtocol where Self.ValueType: Comparable {
         )
     }
     
-    public final func isLessThan<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isLessThan<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: otherAttribute.___expression,
             modifier: .direct,
@@ -216,8 +216,8 @@ extension AttributeProtocol where Self.ValueType: Comparable {
         )
     }
 
-    public final func isLessThanOrEqualTo(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isLessThanOrEqualTo(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -226,8 +226,8 @@ extension AttributeProtocol where Self.ValueType: Comparable {
         )
     }
     
-    public final func isLessThanOrEqualTo<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isLessThanOrEqualTo<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: otherAttribute.___expression,
             modifier: .direct,
@@ -240,8 +240,8 @@ extension AttributeProtocol where Self.ValueType: Comparable {
 
 extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol {
     
-    public final func isLike(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isLike(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -250,8 +250,8 @@ extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol
         )
     }
 
-    public final func isIn(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func isIn(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -264,11 +264,11 @@ extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol
 
 extension AttributeProtocol {
 
-    public final func isIn(_ values: [Self.ValueType]) -> ComparisonPredicate {
+    public final func isIn(_ values: [Self.ValueType]) -> NSComparisonPredicate {
         let rightExpressionConstanteValue = values.map { toAnyObject($0) }
         let rightExpression = NSExpression(forConstantValue: rightExpressionConstanteValue)
         
-        return ComparisonPredicate(
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: rightExpression,
             modifier: .direct,
@@ -281,11 +281,11 @@ extension AttributeProtocol {
 
 extension AttributeProtocol where Self.ValueType: Comparable {
     
-    public final func isBetween(_ range: Range<ValueType>) -> ComparisonPredicate {
+    public final func isBetween(_ range: Range<ValueType>) -> NSComparisonPredicate {
         let rightExpressionConstanteValue = [toAnyObject(range.lowerBound), toAnyObject(range.upperBound)] as NSArray
         let rightExpression = NSExpression(forConstantValue: rightExpressionConstanteValue)
         
-        return ComparisonPredicate(
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: rightExpression,
             modifier: .direct,
@@ -296,10 +296,10 @@ extension AttributeProtocol where Self.ValueType: Comparable {
     
 }
 
-extension AttributeProtocol where Self.ValueType: Boolean {
+extension AttributeProtocol where Self.ValueType: ExpressibleByBooleanLiteral {
     
-    public final func not() -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func not() -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: NSExpression(forConstantValue: NSNumber(value: false)),
             modifier: .direct,
@@ -312,8 +312,8 @@ extension AttributeProtocol where Self.ValueType: Boolean {
 
 extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol {
 
-    public final func contains(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func contains(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -322,8 +322,8 @@ extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol
         )
     }
     
-    public final func contains<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func contains<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: otherAttribute.___expression,
             modifier: .direct,
@@ -332,8 +332,8 @@ extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol
         )
     }
     
-    public final func beginsWith(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func beginsWith(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -342,8 +342,8 @@ extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol
         )
     }
 
-    public final func beginsWith<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func beginsWith<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: otherAttribute.___expression,
             modifier: .direct,
@@ -352,8 +352,8 @@ extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol
         )
     }
 
-    public final func endsWith(_ value: Self.ValueType) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func endsWith(_ value: Self.ValueType) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: expressionForValue(value),
             modifier: .direct,
@@ -362,8 +362,8 @@ extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol
         )
     }
     
-    public final func endsWith<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func endsWith<T: AttributeProtocol where T.ValueType == Self.ValueType>(_ otherAttribute: T) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: otherAttribute.___expression,
             modifier: .direct,
@@ -376,8 +376,8 @@ extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol
 
 extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol {
     
-    public final func matches(_ regularExpressionString: String) -> ComparisonPredicate {
-        return ComparisonPredicate(
+    public final func matches(_ regularExpressionString: String) -> NSComparisonPredicate {
+        return NSComparisonPredicate(
             leftExpression: self.___expression,
             rightExpression: NSExpression(forConstantValue: regularExpressionString),
             modifier: .direct,
@@ -392,7 +392,7 @@ extension AttributeProtocol where Self.ValueType: AlecrimCoreData.StringProtocol
 
 extension AttributeProtocol where Self.ValueType: Collection {
     
-    public final func any(_ predicateClosure: @noescape (Self.ValueType.Iterator.Element.Type) -> ComparisonPredicate) -> ComparisonPredicate {
+    public final func any(_ predicateClosure: @noescape (Self.ValueType.Iterator.Element.Type) -> NSComparisonPredicate) -> NSComparisonPredicate {
         let p = predicateClosure(Self.ValueType.Iterator.Element.self)
         
         var leftExpression = p.leftExpression
@@ -405,7 +405,7 @@ extension AttributeProtocol where Self.ValueType: Collection {
             rightExpression = NSExpression(forKeyPath: "\(self.___name).\(rightExpression.keyPath)")
         }
         
-        return ComparisonPredicate(
+        return NSComparisonPredicate(
             leftExpression: leftExpression,
             rightExpression: rightExpression,
             modifier: .any,
@@ -414,7 +414,7 @@ extension AttributeProtocol where Self.ValueType: Collection {
         )
     }
     
-    public final func all(_ predicateClosure: @noescape (Self.ValueType.Iterator.Element.Type) -> ComparisonPredicate) -> ComparisonPredicate {
+    public final func all(_ predicateClosure: @noescape (Self.ValueType.Iterator.Element.Type) -> NSComparisonPredicate) -> NSComparisonPredicate {
         let p = predicateClosure(Self.ValueType.Iterator.Element.self)
         
         var leftExpression = p.leftExpression
@@ -427,7 +427,7 @@ extension AttributeProtocol where Self.ValueType: Collection {
             rightExpression = NSExpression(forKeyPath: "\(self.___name).\(rightExpression.keyPath)")
         }
         
-        return ComparisonPredicate(
+        return NSComparisonPredicate(
             leftExpression: leftExpression,
             rightExpression: rightExpression,
             modifier: .all,
@@ -436,7 +436,7 @@ extension AttributeProtocol where Self.ValueType: Collection {
         )
     }
 
-    public final func none(_ predicateClosure: @noescape (Self.ValueType.Iterator.Element.Type) -> ComparisonPredicate) -> Predicate {
+    public final func none(_ predicateClosure: @noescape (Self.ValueType.Iterator.Element.Type) -> NSComparisonPredicate) -> NSPredicate {
         let p = predicateClosure(Self.ValueType.Iterator.Element.self)
         
         var leftExpression = p.leftExpression
@@ -449,7 +449,7 @@ extension AttributeProtocol where Self.ValueType: Collection {
             rightExpression = NSExpression(forKeyPath: "\(self.___name).\(rightExpression.keyPath)")
         }
         
-        let allPredicate = ComparisonPredicate(
+        let allPredicate = NSComparisonPredicate(
             leftExpression: leftExpression,
             rightExpression: rightExpression,
             modifier: .all,
@@ -462,86 +462,86 @@ extension AttributeProtocol where Self.ValueType: Collection {
         let format = "NONE" + (allPredicate.description as NSString).substring(from: 3)
         
         //
-        return Predicate(format: format)
+        return NSPredicate(format: format)
     }
 
 }
 
 // MARK: - convenience operators
 
-public func == <A: AttributeProtocol, V where A.ValueType: Equatable, A.ValueType == V>(left: A, right: V) -> ComparisonPredicate {
+public func == <A: AttributeProtocol, V where A.ValueType: Equatable, A.ValueType == V>(left: A, right: V) -> NSComparisonPredicate {
     return left.isEqualTo(right)
 }
 
-public func == <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Equatable, L.ValueType == R.ValueType>(left: L, right: R) -> ComparisonPredicate {
+public func == <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Equatable, L.ValueType == R.ValueType>(left: L, right: R) -> NSComparisonPredicate {
     return left.isEqualTo(right)
 }
 
-public func == <A: NullableAttributeProtocol, V where A.ValueType: Equatable, A.ValueType == V>(left: A, right: V?) -> ComparisonPredicate {
+public func == <A: NullableAttributeProtocol, V where A.ValueType: Equatable, A.ValueType == V>(left: A, right: V?) -> NSComparisonPredicate {
     return left.isEqualTo(right)
 }
 
-public func != <A: AttributeProtocol, V where A.ValueType: Equatable, A.ValueType == V>(left: A, right: V) -> ComparisonPredicate {
+public func != <A: AttributeProtocol, V where A.ValueType: Equatable, A.ValueType == V>(left: A, right: V) -> NSComparisonPredicate {
     return left.isNotEqualTo(right)
 }
 
-public func != <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Equatable, L.ValueType == R.ValueType>(left: L, right: R) -> ComparisonPredicate {
+public func != <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Equatable, L.ValueType == R.ValueType>(left: L, right: R) -> NSComparisonPredicate {
     return left.isNotEqualTo(right)
 }
 
-public func != <A: NullableAttributeProtocol, V where A.ValueType: Equatable, A.ValueType == V>(left: A, right: V?) -> ComparisonPredicate {
+public func != <A: NullableAttributeProtocol, V where A.ValueType: Equatable, A.ValueType == V>(left: A, right: V?) -> NSComparisonPredicate {
     return left.isNotEqualTo(right)
 }
 
-public func > <A: AttributeProtocol, V where A.ValueType: Comparable, A.ValueType == V>(left: A, right: V) -> ComparisonPredicate {
+public func > <A: AttributeProtocol, V where A.ValueType: Comparable, A.ValueType == V>(left: A, right: V) -> NSComparisonPredicate {
     return left.isGreaterThan(right)
 }
 
-public func > <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Comparable, L.ValueType == R.ValueType>(left: L, right: R) -> ComparisonPredicate {
+public func > <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Comparable, L.ValueType == R.ValueType>(left: L, right: R) -> NSComparisonPredicate {
     return left.isGreaterThan(right)
 }
 
-public func >= <A: AttributeProtocol, V where A.ValueType: Comparable, A.ValueType == V>(left: A, right: V) -> ComparisonPredicate {
+public func >= <A: AttributeProtocol, V where A.ValueType: Comparable, A.ValueType == V>(left: A, right: V) -> NSComparisonPredicate {
     return left.isGreaterThanOrEqualTo(right)
 }
 
-public func >= <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Comparable, L.ValueType == R.ValueType>(left: L, right: R) -> ComparisonPredicate {
+public func >= <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Comparable, L.ValueType == R.ValueType>(left: L, right: R) -> NSComparisonPredicate {
     return left.isGreaterThanOrEqualTo(right)
 }
 
-public func < <A: AttributeProtocol, V where A.ValueType: Comparable, A.ValueType == V>(left: A, right: V) -> ComparisonPredicate {
+public func < <A: AttributeProtocol, V where A.ValueType: Comparable, A.ValueType == V>(left: A, right: V) -> NSComparisonPredicate {
     return left.isLessThan(right)
 }
 
-public func < <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Comparable, L.ValueType == R.ValueType>(left: L, right: R) -> ComparisonPredicate {
+public func < <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Comparable, L.ValueType == R.ValueType>(left: L, right: R) -> NSComparisonPredicate {
     return left.isLessThan(right)
 }
 
-public func <= <A: AttributeProtocol, V where A.ValueType: Comparable, A.ValueType == V>(left: A, right: V) -> ComparisonPredicate {
+public func <= <A: AttributeProtocol, V where A.ValueType: Comparable, A.ValueType == V>(left: A, right: V) -> NSComparisonPredicate {
     return left.isLessThanOrEqualTo(right)
 }
 
-public func <= <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Comparable, L.ValueType == R.ValueType>(left: L, right: R) -> ComparisonPredicate {
+public func <= <L: AttributeProtocol, R: AttributeProtocol where L.ValueType: Comparable, L.ValueType == R.ValueType>(left: L, right: R) -> NSComparisonPredicate {
     return left.isLessThanOrEqualTo(right)
 }
 
-public func ~= <A: AttributeProtocol, V where A.ValueType: AlecrimCoreData.StringProtocol, A.ValueType == V>(left: A, right: V) -> ComparisonPredicate {
+public func ~= <A: AttributeProtocol, V where A.ValueType: AlecrimCoreData.StringProtocol, A.ValueType == V>(left: A, right: V) -> NSComparisonPredicate {
     return left.isLike(right)
 }
 
-public func << <A: AttributeProtocol, V where A.ValueType: AlecrimCoreData.StringProtocol, A.ValueType == V>(left: A, right: V) -> ComparisonPredicate {
+public func << <A: AttributeProtocol, V where A.ValueType: AlecrimCoreData.StringProtocol, A.ValueType == V>(left: A, right: V) -> NSComparisonPredicate {
     return left.isIn(right)
 }
 
-public func << <A: AttributeProtocol, V where A.ValueType == V>(left: A, right: [V]) -> ComparisonPredicate {
+public func << <A: AttributeProtocol, V where A.ValueType == V>(left: A, right: [V]) -> NSComparisonPredicate {
     return left.isIn(right)
 }
 
-public func << <A: AttributeProtocol, V: Comparable where A.ValueType == V>(left: A, right: Range<V>) -> ComparisonPredicate {
+public func << <A: AttributeProtocol, V: Comparable where A.ValueType == V>(left: A, right: Range<V>) -> NSComparisonPredicate {
     return left.isBetween(right)
 }
 
-prefix public func ! <A: AttributeProtocol where A.ValueType: Boolean>(left: A) -> ComparisonPredicate {
+prefix public func ! <A: AttributeProtocol where A.ValueType: ExpressibleByBooleanLiteral>(left: A) -> NSComparisonPredicate {
     return left.not()
 }
 

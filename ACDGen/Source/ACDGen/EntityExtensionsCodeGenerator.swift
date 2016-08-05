@@ -34,11 +34,11 @@ public final class EntityExtensionsCodeGenerator: CodeGenerator {
         
         //
         self.attributes = self.entityDescription.attributesByName
-        self.attributeKeys = self.attributes.keys.sorted(isOrderedBefore: { $0 < $1 })
+        self.attributeKeys = self.attributes.keys.sorted { $0 < $1 }
         
         //
         self.relationships = self.entityDescription.relationshipsByName
-        self.relationshipKeys = self.relationships.keys.sorted(isOrderedBefore: { $0 < $1 })
+        self.relationshipKeys = self.relationships.keys.sorted { $0 < $1 }
     }
     
     public func generate() throws {

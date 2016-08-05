@@ -11,7 +11,7 @@ import CoreData
 
 public struct PersistentContainerOptions {
     public static var defaultBatchSize: Int = 20
-    public static var defaultComparisonPredicateOptions: ComparisonPredicate.Options = [.caseInsensitive, .diacriticInsensitive]
+    public static var defaultComparisonPredicateOptions: NSComparisonPredicate.Options = [.caseInsensitive, .diacriticInsensitive]
 }
 
 public class PersistentContainer<T: NSManagedObjectContext> {
@@ -59,7 +59,7 @@ public class PersistentContainer<T: NSManagedObjectContext> {
     
     // MARK: -
     
-    public func loadPersistentStores(completionHandler block: (NSPersistentStoreDescription, NSError?) -> Swift.Void) {
+    public func loadPersistentStores(completionHandler block: (NSPersistentStoreDescription, Error?) -> Swift.Void) {
         self.underlyingPersistentContainer.loadPersistentStores(completionHandler: block)
     }
     

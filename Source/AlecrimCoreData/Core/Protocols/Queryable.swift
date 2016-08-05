@@ -11,8 +11,8 @@ import CoreData
 
 public protocol Queryable: Enumerable {
     
-    var predicate: Predicate? { get set }
-    var sortDescriptors: [SortDescriptor]? { get set }
+    var predicate: NSPredicate? { get set }
+    var sortDescriptors: [NSSortDescriptor]? { get set }
     
 }
 
@@ -24,26 +24,26 @@ extension Queryable {
         return self.sort(using: attribute.___name, ascending: ascending, options: attribute.___comparisonPredicateOptions)
     }
     
-    public final func sort(using attributeName: String, ascending: Bool = true, options: ComparisonPredicate.Options = PersistentContainerOptions.defaultComparisonPredicateOptions) -> Self {
-        let sortDescriptor: SortDescriptor
+    public final func sort(using attributeName: String, ascending: Bool = true, options: NSComparisonPredicate.Options = PersistentContainerOptions.defaultComparisonPredicateOptions) -> Self {
+        let sortDescriptor: NSSortDescriptor
         
         if options.contains(.caseInsensitive) && options.contains(.diacriticInsensitive) {
-            sortDescriptor = SortDescriptor(key: attributeName, ascending: ascending, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+            sortDescriptor = NSSortDescriptor(key: attributeName, ascending: ascending, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
         }
         else if options.contains(.caseInsensitive) {
-            sortDescriptor = SortDescriptor(key: attributeName, ascending: ascending, selector: #selector(NSString.caseInsensitiveCompare(_:)))
+            sortDescriptor = NSSortDescriptor(key: attributeName, ascending: ascending, selector: #selector(NSString.caseInsensitiveCompare(_:)))
         }
         else if options.contains(.diacriticInsensitive) {
-            sortDescriptor = SortDescriptor(key: attributeName, ascending: ascending, selector: #selector(NSString.localizedCompare(_:)))
+            sortDescriptor = NSSortDescriptor(key: attributeName, ascending: ascending, selector: #selector(NSString.localizedCompare(_:)))
         }
         else {
-            sortDescriptor = SortDescriptor(key: attributeName, ascending: ascending)
+            sortDescriptor = NSSortDescriptor(key: attributeName, ascending: ascending)
         }
         
         return self.sort(using: sortDescriptor)
     }
     
-    public final func sort(using sortDescriptor: SortDescriptor) -> Self {
+    public final func sort(using sortDescriptor: NSSortDescriptor) -> Self {
         var clone = self
         
         if clone.sortDescriptors != nil {
@@ -56,7 +56,7 @@ extension Queryable {
         return clone
     }
     
-    public final func sort(using sortDescriptors: [SortDescriptor]) -> Self {
+    public final func sort(using sortDescriptors: [NSSortDescriptor]) -> Self {
         var clone = self
 
         if clone.sortDescriptors != nil {
@@ -75,11 +75,11 @@ extension Queryable {
 
 extension Queryable {
     
-    public final func filter(using predicate: Predicate) -> Self {
+    public final func filter(using predicate: NSPredicate) -> Self {
         var clone = self
         
         if let existingPredicate = clone.predicate {
-            clone.predicate = CompoundPredicate(andPredicateWithSubpredicates: [existingPredicate, predicate])
+            clone.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [existingPredicate, predicate])
         }
         else {
             clone.predicate = predicate

@@ -122,7 +122,7 @@ extension ViewController {
                     self.dataModelFileURL = url
                     
                     self.chooseDataModelButton.isHidden = true
-                    self.dataModelLabel.stringValue = url.lastPathComponent!
+                    self.dataModelLabel.stringValue = url.lastPathComponent
                     self.dataModelLabel.isHidden = false
                     self.gererateButton.isEnabled = true
                 }

@@ -30,7 +30,7 @@ extension GenericQueryable {
 
 extension GenericQueryable {
     
-    public final func filter(_ predicateClosure: @noescape (Self.Element.Type) -> Predicate) -> Self {
+    public final func filter(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Self {
         return self.filter(using: predicateClosure(Self.Element.self))
     }
     
@@ -40,7 +40,7 @@ extension GenericQueryable {
 
 extension GenericQueryable {
     
-    public final func count(_ predicateClosure: @noescape (Self.Element.Type) -> Predicate) -> Int {
+    public final func count(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Int {
         return self.filter(using: predicateClosure(Self.Element.self)).count()
     }
     
@@ -48,11 +48,11 @@ extension GenericQueryable {
 
 extension GenericQueryable {
     
-    public final func any(_ predicateClosure: @noescape (Self.Element.Type) -> Predicate) -> Bool {
+    public final func any(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Bool {
         return self.filter(using: predicateClosure(Self.Element.self)).any()
     }
     
-    public final func none(_ predicateClosure: @noescape (Self.Element.Type) -> Predicate) -> Bool {
+    public final func none(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Bool {
         return self.filter(using: predicateClosure(Self.Element.self)).none()
     }
     
@@ -60,7 +60,7 @@ extension GenericQueryable {
 
 extension GenericQueryable {
     
-    public final func first(_ predicateClosure: @noescape (Self.Element.Type) -> Predicate) -> Self.Element? {
+    public final func first(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Self.Element? {
         return self.filter(using: predicateClosure(Self.Element.self)).first()
     }
     

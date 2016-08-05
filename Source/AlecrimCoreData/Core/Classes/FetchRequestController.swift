@@ -44,8 +44,8 @@ public final class FetchRequestController<T: NSManagedObject> {
     }()
 
     //
-    private let initialPredicate: Predicate?
-    private let initialSortDescriptors: [SortDescriptor]?
+    private let initialPredicate: NSPredicate?
+    private let initialSortDescriptors: [NSSortDescriptor]?
     
     /// Returns a fetch request controller initialized using the given arguments.
     ///
@@ -66,7 +66,7 @@ public final class FetchRequestController<T: NSManagedObject> {
         self.cacheName = cacheName
         
         //
-        self.initialPredicate = fetchRequest.predicate?.copy() as? Predicate
+        self.initialPredicate = fetchRequest.predicate?.copy() as? NSPredicate
         self.initialSortDescriptors = fetchRequest.sortDescriptors
     }
 
@@ -202,19 +202,19 @@ extension FetchRequestController {
 
 extension FetchRequestController {
     
-    public func refresh(using predicate: Predicate?, keepOriginalPredicate: Bool) throws {
+    public func refresh(using predicate: NSPredicate?, keepOriginalPredicate: Bool) throws {
         self.assignPredicate(predicate, keepOriginalPredicate: keepOriginalPredicate)
         
         try self.refresh()
     }
 
-    public func refresh(using sortDescriptors: [SortDescriptor]?, keepOriginalSortDescriptors: Bool) throws {
+    public func refresh(using sortDescriptors: [NSSortDescriptor]?, keepOriginalSortDescriptors: Bool) throws {
         self.assignSortDescriptors(sortDescriptors, keepOriginalSortDescriptors: keepOriginalSortDescriptors)
         
         try self.refresh()
     }
     
-    public func refresh(using predicate: Predicate?, sortDescriptors: [SortDescriptor]?, keepOriginalPredicate: Bool, keepOriginalSortDescriptors: Bool) throws {
+    public func refresh(using predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, keepOriginalPredicate: Bool, keepOriginalSortDescriptors: Bool) throws {
         self.assignPredicate(predicate, keepOriginalPredicate: keepOriginalPredicate)
         self.assignSortDescriptors(sortDescriptors, keepOriginalSortDescriptors: keepOriginalSortDescriptors)
         
@@ -237,7 +237,7 @@ extension FetchRequestController {
 
 extension FetchRequestController {
     
-    public func filter(_ predicateClosure: @noescape (T.Type) -> Predicate) throws {
+    public func filter(_ predicateClosure: @noescape (T.Type) -> NSPredicate) throws {
         let predicate = predicateClosure(T.self)
         try self.refresh(using: predicate, keepOriginalPredicate: true)
     }
@@ -254,13 +254,13 @@ extension FetchRequestController {
 
 extension FetchRequestController {
  
-    private func assignPredicate(_ predicate: Predicate?, keepOriginalPredicate: Bool) {
-        let newPredicate: Predicate?
+    private func assignPredicate(_ predicate: NSPredicate?, keepOriginalPredicate: Bool) {
+        let newPredicate: NSPredicate?
         
         if keepOriginalPredicate {
             if let initialPredicate = self.initialPredicate {
                 if let predicate = predicate {
-                    newPredicate = CompoundPredicate(type: .and, subpredicates: [initialPredicate, predicate])
+                    newPredicate = NSCompoundPredicate(type: .and, subpredicates: [initialPredicate, predicate])
                 }
                 else {
                     newPredicate = initialPredicate
@@ -277,8 +277,8 @@ extension FetchRequestController {
         self.fetchRequest.predicate = newPredicate
     }
     
-    private func assignSortDescriptors(_ sortDescriptors: [SortDescriptor]?, keepOriginalSortDescriptors: Bool) {
-        let newSortDescriptors: [SortDescriptor]?
+    private func assignSortDescriptors(_ sortDescriptors: [NSSortDescriptor]?, keepOriginalSortDescriptors: Bool) {
+        let newSortDescriptors: [NSSortDescriptor]?
         
         if keepOriginalSortDescriptors {
             if let initialSortDescriptors = self.initialSortDescriptors {

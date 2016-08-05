@@ -118,6 +118,7 @@ extension FetchRequestController {
 
 extension FetchRequestController {
  
+    @discardableResult
     internal func needsReloadData(closure: () -> Void) -> Self {
         self.delegate.needsReloadDataClosure = closure
         return self
@@ -127,51 +128,61 @@ extension FetchRequestController {
 
 extension FetchRequestController {
     
+    @discardableResult
     public func willChangeContent(closure: () -> Void) -> Self {
         self.delegate.willChangeContentClosures.append(closure)
         return self
     }
     
+    @discardableResult
     public func didChangeContent(closure: () -> Void) -> Self {
         self.delegate.didChangeContentClosures.append(closure)
         return self
     }
     
+    @discardableResult
     public func didInsertSection(closure: (FetchRequestControllerSection<T>, Int) -> Void) -> Self {
         self.delegate.didInsertSectionClosures.append(closure)
         return self
     }
     
+    @discardableResult
     public func didDeleteSection(closure: (FetchRequestControllerSection<T>, Int) -> Void) -> Self {
         self.delegate.didDeleteSectionClosures.append(closure)
         return self
     }
     
+    @discardableResult
     public func didUpdateSection(closure: (FetchRequestControllerSection<T>, Int) -> Void) -> Self {
         self.delegate.didUpdateSectionClosures.append(closure)
         return self
     }
     
+    @discardableResult
     public func didInsertObject(closure: (T, IndexPath) -> Void) -> Self {
         self.delegate.didInsertObjectClosures.append(closure)
         return self
     }
     
+    @discardableResult
     public func didDeleteObject(closure: (T, IndexPath) -> Void) -> Self {
         self.delegate.didDeleteObjectClosures.append(closure)
         return self
     }
     
+    @discardableResult
     public func didUpdateObject(closure: (T, IndexPath) -> Void) -> Self {
         self.delegate.didUpdateObjectClosures.append(closure)
         return self
     }
     
+    @discardableResult
     public func didMoveObject(closure: (T, IndexPath, IndexPath) -> Void) -> Self {
         self.delegate.didMoveObjectClosures.append(closure)
         return self
     }
     
+    @discardableResult
     public func sectionIndexTitle(closure: (String) -> String?) -> Self {
         self.delegate.sectionIndexTitleClosure = closure
         return self

@@ -11,7 +11,7 @@ import CoreData
 
 extension NSManagedObject {
 
-    public final func inContext(otherContext: NSManagedObjectContext) throws -> Self {
+    public final func inContext(_ otherContext: NSManagedObjectContext) throws -> Self {
         if self.managedObjectContext === otherContext {
             return self
         }
@@ -41,12 +41,12 @@ extension NSManagedObject {
 
 extension NSManagedObject {
     
-    public class func isIn(values: Set<NSManagedObject>) -> ComparisonPredicate {
+    public class func isIn(values: Set<NSManagedObject>) -> NSComparisonPredicate {
         let rightExpressionConstantValues = values.map { NSExpression(forConstantValue: $0.objectID) }
         let rightExpression = NSExpression(forAggregate: rightExpressionConstantValues)
         let leftExpression = NSExpression(forKeyPath: "objectID")
         
-        return ComparisonPredicate(
+        return NSComparisonPredicate(
             leftExpression: leftExpression,
             rightExpression: rightExpression,
             modifier: .direct,

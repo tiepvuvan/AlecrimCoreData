@@ -58,14 +58,14 @@ catch {
 
 // MARK: - URL options
 
-let fm = FileManager.default()
+let fm = FileManager.default
 
 //
 
 let dataModelFileURL = URL(fileURLWithPath: dataModelFileURLOption.value!)
 
 var isDataModelFileURLDirectory: ObjCBool = false
-if !fm.fileExists(atPath: dataModelFileURL.path!, isDirectory: &isDataModelFileURLDirectory) {
+if !fm.fileExists(atPath: dataModelFileURL.path, isDirectory: &isDataModelFileURLDirectory) {
     printHeader()
     print("Core data model file not found.")
     printFooter()
@@ -77,7 +77,7 @@ if !fm.fileExists(atPath: dataModelFileURL.path!, isDirectory: &isDataModelFileU
 let targetFolderURL = URL(fileURLWithPath: targetFolderURLOption.value!)
 
 var isTargetFolderURLDirectory: ObjCBool = true
-if !fm.fileExists(atPath: targetFolderURL.path!, isDirectory: &isTargetFolderURLDirectory) {
+if !fm.fileExists(atPath: targetFolderURL.path, isDirectory: &isTargetFolderURLDirectory) {
     printHeader()
     print("Target folder not found.")
     printFooter()
@@ -85,7 +85,7 @@ if !fm.fileExists(atPath: targetFolderURL.path!, isDirectory: &isTargetFolderURL
     exit(EX_USAGE)
 }
 
-if !isTargetFolderURLDirectory {
+if !isTargetFolderURLDirectory.boolValue {
     printHeader()
     print("Target must be a directory.")
     printFooter()

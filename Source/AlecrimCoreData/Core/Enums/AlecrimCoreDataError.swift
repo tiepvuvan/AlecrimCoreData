@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum AlecrimCoreDataError: ErrorProtocol {
+public enum AlecrimCoreDataError: Error {
     case general
     
     case notSupported
@@ -18,7 +18,7 @@ public enum AlecrimCoreDataError: ErrorProtocol {
     case unexpectedValue(Any)
     
     @noreturn
-    public static func handleError(_ error: ErrorProtocol, message: String = "Unhandled error. See callstack.") {
+    public static func handleError(_ error: Error, message: String = "Unhandled error. See callstack.") {
         // TODO:
         self.fatalError(message)
     }

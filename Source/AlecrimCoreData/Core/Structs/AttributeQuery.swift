@@ -20,13 +20,13 @@ public struct AttributeQuery<T: NSDictionary>: AttributeQueryProtocol {
     public var limit: Int = 0
     public var batchSize: Int = PersistentContainerOptions.defaultBatchSize
     
-    public var predicate: Predicate? = nil
-    public var sortDescriptors: [SortDescriptor]? = nil
+    public var predicate: NSPredicate? = nil
+    public var sortDescriptors: [NSSortDescriptor]? = nil
     
     public var returnsDistinctResults = false
     public var propertiesToFetch = [String]()
     
-    private init(context: NSManagedObjectContext, entityDescription: NSEntityDescription, offset: Int, limit: Int, batchSize: Int, predicate: Predicate?, sortDescriptors: [SortDescriptor]?) {
+    private init(context: NSManagedObjectContext, entityDescription: NSEntityDescription, offset: Int, limit: Int, batchSize: Int, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?) {
         self.context = context
         self.entityDescription = entityDescription
         

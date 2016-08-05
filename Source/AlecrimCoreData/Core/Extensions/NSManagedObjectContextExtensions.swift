@@ -29,7 +29,7 @@ extension NSManagedObjectContext {
 
 extension NSManagedObjectContext {
     
-    internal func executeBatchUpdateRequest(entityDescription: NSEntityDescription, propertiesToUpdate: [NSObject : AnyObject], predicate: Predicate, completion completionHandler: (Int, ErrorProtocol?) -> Void) {
+    internal func executeBatchUpdateRequest(entityDescription: NSEntityDescription, propertiesToUpdate: [NSObject : AnyObject], predicate: NSPredicate, completion completionHandler: (Int, Error?) -> Void) {
         let batchUpdateRequest = NSBatchUpdateRequest(entity: entityDescription)
         batchUpdateRequest.propertiesToUpdate = propertiesToUpdate
         batchUpdateRequest.predicate = predicate
@@ -68,7 +68,7 @@ extension NSManagedObjectContext {
         }
     }
 
-    internal func executeBatchDeleteRequest(entityDescription: NSEntityDescription, objectIDs: [NSManagedObjectID], completion completionHandler: (Int, ErrorProtocol?) -> Void) {
+    internal func executeBatchDeleteRequest(entityDescription: NSEntityDescription, objectIDs: [NSManagedObjectID], completion completionHandler: (Int, Error?) -> Void) {
         let batchDeleteRequest = NSBatchDeleteRequest(objectIDs: objectIDs)
         batchDeleteRequest.resultType = .resultTypeCount
         

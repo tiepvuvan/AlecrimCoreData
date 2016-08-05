@@ -39,11 +39,11 @@ public enum SourceCodeFileType {
 extension CodeGenerator {
     
     public func saveSourceCodeFile(withName name: String, contents: String, type: SourceCodeFileType) throws {
-        let url = try! self.parameters.targetFolderURL.appendingPathComponent(type.fullName(fromName: name), isDirectory: false)
+        let url = self.parameters.targetFolderURL.appendingPathComponent(type.fullName(fromName: name), isDirectory: false)
         
-        let fileManager = FileManager.default()
+        let fileManager = FileManager.default
         
-        if !type.canOverwrite && fileManager.fileExists(atPath: url.path!) {
+        if !type.canOverwrite && fileManager.fileExists(atPath: url.path) {
             return
         }
         
@@ -63,7 +63,7 @@ extension CodeGenerator {
     public func valueClassName(for attributeDescription: NSAttributeDescription) -> String {
         if self.parameters.useScalarProperties {
             var isUnsigned = false
-            for predicate in attributeDescription.validationPredicates as [Predicate] {
+            for predicate in attributeDescription.validationPredicates as [NSPredicate] {
                 if (predicate.predicateFormat as NSString).contains(">= 0") {
                     isUnsigned = true
                     break
