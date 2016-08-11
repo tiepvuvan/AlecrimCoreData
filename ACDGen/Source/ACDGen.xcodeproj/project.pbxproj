@@ -14,6 +14,8 @@
 		1470290A1B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147029091B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift */; };
 		147C8C531B9DF70C00C2CEDB /* EntityCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C8C521B9DF70C00C2CEDB /* EntityCodeGenerator.swift */; };
 		147C8C551B9DF77500C2CEDB /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147C8C541B9DF77500C2CEDB /* CodeGenerator.swift */; };
+		14B2B1F21D5D32EC0073C1C2 /* DataContextCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B2B1F11D5D32EC0073C1C2 /* DataContextCodeGenerator.swift */; };
+		14B2B1F31D5D32EC0073C1C2 /* DataContextCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B2B1F11D5D32EC0073C1C2 /* DataContextCodeGenerator.swift */; };
 		14CF9E5D1CA504B000594115 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CF9E5C1CA504B000594115 /* main.swift */; };
 		14CF9E661CA5052400594115 /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CF9E621CA5052400594115 /* CommandLine.swift */; };
 		14CF9E671CA5052400594115 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CF9E641CA5052400594115 /* Option.swift */; };
@@ -53,6 +55,7 @@
 		147029091B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGeneratorParameters.swift; sourceTree = "<group>"; };
 		147C8C521B9DF70C00C2CEDB /* EntityCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityCodeGenerator.swift; sourceTree = "<group>"; };
 		147C8C541B9DF77500C2CEDB /* CodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGenerator.swift; sourceTree = "<group>"; };
+		14B2B1F11D5D32EC0073C1C2 /* DataContextCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataContextCodeGenerator.swift; sourceTree = "<group>"; };
 		14CF9E5A1CA504B000594115 /* acdgenp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = acdgenp; sourceTree = BUILT_PRODUCTS_DIR; };
 		14CF9E5C1CA504B000594115 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		14CF9E621CA5052400594115 /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
@@ -92,6 +95,7 @@
 				147029091B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift */,
 				146F30B71B9E050A00778549 /* CodeGeneratorError.swift */,
 				14E7ABE31AA230F300E0AA37 /* ModelCodeGenerator.swift */,
+				14B2B1F11D5D32EC0073C1C2 /* DataContextCodeGenerator.swift */,
 				147C8C521B9DF70C00C2CEDB /* EntityCodeGenerator.swift */,
 				146F30B51B9E03A900778549 /* EntityExtensionsCodeGenerator.swift */,
 			);
@@ -271,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14B2B1F31D5D32EC0073C1C2 /* DataContextCodeGenerator.swift in Sources */,
 				14CF9E701CA5055100594115 /* ACDGen+StringExtensions.swift in Sources */,
 				14CF9E6A1CA5054C00594115 /* CodeGeneratorParameters.swift in Sources */,
 				14CF9E6B1CA5054C00594115 /* CodeGeneratorError.swift in Sources */,
@@ -297,6 +302,7 @@
 				146F30B61B9E03A900778549 /* EntityExtensionsCodeGenerator.swift in Sources */,
 				147C8C551B9DF77500C2CEDB /* CodeGenerator.swift in Sources */,
 				147C8C531B9DF70C00C2CEDB /* EntityCodeGenerator.swift in Sources */,
+				14B2B1F21D5D32EC0073C1C2 /* DataContextCodeGenerator.swift in Sources */,
 				14E7ABC91AA2270100E0AA37 /* ViewController.swift in Sources */,
 				1470290A1B9DFD4500CEF4D9 /* CodeGeneratorParameters.swift in Sources */,
 				14E7ABC71AA2270100E0AA37 /* AppDelegate.swift in Sources */,

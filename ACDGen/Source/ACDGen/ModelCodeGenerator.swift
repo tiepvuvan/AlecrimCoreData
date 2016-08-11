@@ -34,6 +34,13 @@ public final class ModelCodeGenerator: CodeGenerator {
     }
     
     public func generate() throws {
+        //
+        if self.parameters.dataContextName != "" {
+            let dataContextContextGenerator = DataContextCodeGenerator(parameters: self.parameters)
+            try dataContextContextGenerator.generate()
+        }
+        
+        //
         let temporaryManagedObjectModel = try self.createTemporaryManagedObjectModel()
         let entityDescriptions = temporaryManagedObjectModel.entities.sorted { $0.managedObjectClassName < $1.managedObjectClassName }
 

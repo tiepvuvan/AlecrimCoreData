@@ -23,12 +23,12 @@ public enum SourceCodeFileType {
         let suffix: String
         
         switch self {
-        case .class: suffix = "+CoreDataClass"
-        case .properties: suffix = "+CoreDataProperties"
-        case .attributes: suffix = "+AlecrimCoreDataAttributes"
+        case .class: suffix = "CoreDataClass"
+        case .properties: suffix = "CoreDataProperties"
+        case .attributes: suffix = "AlecrimCoreDataAttributes"
         }
         
-        return "\(name)\(suffix).swift"
+        return "\(name)+\(suffix).swift"
     }
     
     public var canOverwrite: Bool {

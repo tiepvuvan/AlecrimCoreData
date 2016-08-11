@@ -1,30 +1,31 @@
 //
-//  EntityCodeGenerator.swift
+//  DataContextCodeGenerator.swift
 //  ACDGen
 //
-//  Created by Vanderlei Martinelli on 2015-02-28.
-//  Copyright (c) 2015 Alecrim. All rights reserved.
+//  Created by Vanderlei Martinelli on 2016-08-11.
+//  Copyright © 2016 Alecrim. All rights reserved.
 //
 
 import Foundation
 import CoreData
 
-public final class EntityCodeGenerator: CodeGenerator {
+public final class DataContextCodeGenerator: CodeGenerator {
     
     public let parameters: CodeGeneratorParameters
-    private let entityDescription: NSEntityDescription
     
-    public init(parameters: CodeGeneratorParameters, entityDescription: NSEntityDescription) {
+    public init(parameters: CodeGeneratorParameters) {
         self.parameters = parameters
-        self.entityDescription = entityDescription
     }
-    
+
     public func generate() throws {
+        //
+        guard self.parameters.dataContextName != "" else { return }
+        
         //
         let string = NSMutableString()
         
         //
-        let className = self.entityDescription.managedObjectClassName.components(separatedBy: ".").last!
+        let className = self.parameters.dataContextName
         
         // header
         string.appendHeader(className, type: .class)
@@ -35,7 +36,7 @@ public final class EntityCodeGenerator: CodeGenerator {
         string.appendLine()
         
         // class
-        let superClassName = (self.entityDescription.superentity == nil ? "NSManagedObject" : self.entityDescription.superentity!.managedObjectClassName.components(separatedBy: ".").last!)
+        let superClassName = "NSManagedObjectContext"
         
         string.appendLine(self.parameters.accessModifier + "class \(className): \(superClassName) {")
         string.appendLine()
@@ -45,4 +46,5 @@ public final class EntityCodeGenerator: CodeGenerator {
         // save
         try self.saveSourceCodeFile(withName: className, contents: string as String, type: .class)
     }
+    
 }
