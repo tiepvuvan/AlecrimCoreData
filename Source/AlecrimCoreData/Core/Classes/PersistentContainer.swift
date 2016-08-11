@@ -48,13 +48,13 @@ public class PersistentContainer<T: NSManagedObjectContext> {
     
     public init(name: String) {
         self.underlyingPersistentContainer = NSPersistentContainer(name: name)
-        self.configureManagedObjectContext(self.viewContext)
+        PersistentContainer.configureManagedObjectContext(self.viewContext)
     }
     
     
     public init(name: String, managedObjectModel model: NSManagedObjectModel) {
         self.underlyingPersistentContainer = NSPersistentContainer(name: name, managedObjectModel: model)
-        self.configureManagedObjectContext(self.viewContext)
+        PersistentContainer.configureManagedObjectContext(self.viewContext)
     }
     
     // MARK: -
@@ -69,14 +69,14 @@ public class PersistentContainer<T: NSManagedObjectContext> {
     
     public func performBackgroundTask(_ block: (T) -> Swift.Void) {
         self.underlyingPersistentContainer.performBackgroundTask { backgroundContext in
-            self.configureManagedObjectContext(backgroundContext)
+            PersistentContainer.configureManagedObjectContext(backgroundContext)
             block(backgroundContext as! T)
         }
     }
     
     // MARK: -
     
-    private func configureManagedObjectContext(_ context: NSManagedObjectContext) {
+    private static func configureManagedObjectContext(_ context: NSManagedObjectContext) {
         context.automaticallyMergesChangesFromParent = true
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
