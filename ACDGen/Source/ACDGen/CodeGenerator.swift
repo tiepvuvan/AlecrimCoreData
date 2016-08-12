@@ -32,8 +32,7 @@ public enum SourceCodeFileType {
     }
     
     public var canOverwrite: Bool {
-        //return self != .class
-        return true
+        return self != .class
     }
 }
 
