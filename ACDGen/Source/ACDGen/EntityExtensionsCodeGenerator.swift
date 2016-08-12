@@ -54,6 +54,7 @@ public final class EntityExtensionsCodeGenerator: CodeGenerator {
         
         self.generateHeader(type: .properties)
         self.generateExtensionHeader()
+        self.generateDefaultFetchRequest()
         self.generateAttributes()
         self.generateToOneRelationships()
         self.generateToManyRelationships()
@@ -122,6 +123,13 @@ extension EntityExtensionsCodeGenerator {
 }
 
 extension EntityExtensionsCodeGenerator {
+    
+    private func generateDefaultFetchRequest() {
+        self.string.appendLine("@nonobjc " + self.parameters.accessModifier + "class func fetchRequest() -> NSFetchRequest<\(self.className)> {", indentLevel: 1)
+        self.string.appendLine("return NSFetchRequest<\(self.className)>(entityName: \"\(self.className)\")", indentLevel: 2)
+        self.string.appendLine("}", indentLevel: 1)
+        self.string.appendLine()
+    }
     
     private func generateAttributes() {
         for attributeKey in self.attributeKeys {
@@ -231,41 +239,54 @@ extension EntityExtensionsCodeGenerator {
                 
                 let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
                 
-                self.string.appendLine("@NSManaged " + "private " + "func add\(capitalizedName)Object(object: \(valueClassName))", indentLevel: 1)
-                self.string.appendLine("@NSManaged " + "private " + "func remove\(capitalizedName)Object(object: \(valueClassName))", indentLevel: 1)
+                self.string.appendLine("@objc(add\(capitalizedName)Object:)", indentLevel: 1)
+                self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func addTo\(capitalizedName)(_ value: \(valueClassName))", indentLevel: 1)
+                self.string.appendLine()
+                
+                self.string.appendLine("@objc(remove\(capitalizedName)Object:)", indentLevel: 1)
+                self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func removeFrom\(capitalizedName)(_ value: \(valueClassName))", indentLevel: 1)
+                self.string.appendLine()
                 
                 if self.parameters.useScalarProperties {
-                    self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func add\(capitalizedName)(\(name): Set<\(valueClassName)>)", indentLevel: 1)
-                    self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func remove\(capitalizedName)(\(name): Set<\(valueClassName)>)", indentLevel: 1)
+                    self.string.appendLine("@objc(add\(capitalizedName):)", indentLevel: 1)
+                    self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func addTo\(capitalizedName)(_ values: Set<\(valueClassName)>)", indentLevel: 1)
+                    self.string.appendLine()
+
+                    self.string.appendLine("@objc(remove\(capitalizedName):)", indentLevel: 1)
+                    self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func removeFrom\(capitalizedName)(_ values: Set<\(valueClassName)>)", indentLevel: 1)
                 }
                 else {
-                    self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func add\(capitalizedName)(\(name): NSSet)", indentLevel: 1)
-                    self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func remove\(capitalizedName)(\(name): NSSet)", indentLevel: 1)
+                    self.string.appendLine("@objc(add\(capitalizedName):)", indentLevel: 1)
+                    self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func addTo\(capitalizedName)(_ values: NSSet)", indentLevel: 1)
+                    self.string.appendLine()
+
+                    self.string.appendLine("@objc(remove\(capitalizedName):)", indentLevel: 1)
+                    self.string.appendLine("@NSManaged " + self.parameters.accessModifier + "func removeFrom\(capitalizedName)(_ values: NSSet)", indentLevel: 1)
                 }
             }
         }
         
-        //
-        for relationshipKey in self.relationshipKeys {
-            let relationship = self.relationships[relationshipKey]!
-            if self.isInheritedPropertyDescription(relationship) {
-                continue
-            }
-            
-            if relationship.isToMany {
-                self.string.appendLine()
-                
-                let name = relationship.name
-                let capitalizedName = (name as NSString).substring(to: 1).uppercased() + (name as NSString).substring(from: 1)
-                let singularName = name.camelCaseSingularized()
-                let capitalizedSingularName = (singularName as NSString).substring(to: 1).uppercased() + (singularName as NSString).substring(from: 1)
-                
-                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
-                
-                self.string.appendLine(self.parameters.accessModifier + "func add\(capitalizedSingularName)(\(singularName): \(valueClassName)) { self.add\(capitalizedName)Object(\(singularName)) }", indentLevel: 1)
-                self.string.appendLine(self.parameters.accessModifier + "func remove\(capitalizedSingularName)(\(singularName): \(valueClassName)) { self.remove\(capitalizedName)Object(\(singularName)) }", indentLevel: 1)
-            }
-        }
+//        //
+//        for relationshipKey in self.relationshipKeys {
+//            let relationship = self.relationships[relationshipKey]!
+//            if self.isInheritedPropertyDescription(relationship) {
+//                continue
+//            }
+//            
+//            if relationship.isToMany {
+//                self.string.appendLine()
+//                
+//                let name = relationship.name
+//                let capitalizedName = (name as NSString).substring(to: 1).uppercased() + (name as NSString).substring(from: 1)
+//                let singularName = name.camelCaseSingularized()
+//                let capitalizedSingularName = (singularName as NSString).substring(to: 1).uppercased() + (singularName as NSString).substring(from: 1)
+//                
+//                let valueClassName = relationship.destinationEntity!.managedObjectClassName.components(separatedBy: ".").last!
+//                
+//                self.string.appendLine(self.parameters.accessModifier + "func add\(capitalizedSingularName)(\(singularName): \(valueClassName)) { self.add\(capitalizedName)Object(\(singularName)) }", indentLevel: 1)
+//                self.string.appendLine(self.parameters.accessModifier + "func remove\(capitalizedSingularName)(\(singularName): \(valueClassName)) { self.remove\(capitalizedName)Object(\(singularName)) }", indentLevel: 1)
+//            }
+//        }
     }
     
     private func generateFetchedProperties() {

@@ -32,7 +32,8 @@ public enum SourceCodeFileType {
     }
     
     public var canOverwrite: Bool {
-        return self != .class
+        //return self != .class
+        return true
     }
 }
 
@@ -91,6 +92,12 @@ extension CodeGenerator {
                 
             case .stringAttributeType:
                 return "String"
+                
+            case .dateAttributeType:
+                return "Date"
+                
+            case .binaryDataAttributeType:
+                return "Data"
                 
             default:
                 break

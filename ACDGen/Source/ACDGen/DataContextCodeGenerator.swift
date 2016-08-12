@@ -38,6 +38,7 @@ public final class DataContextCodeGenerator: CodeGenerator {
         // class
         let superClassName = "NSManagedObjectContext"
         
+        string.appendLine("@objc(\(className))")
         string.appendLine(self.parameters.accessModifier + "class \(className): \(superClassName) {")
         string.appendLine()
         string.appendLine("}")
