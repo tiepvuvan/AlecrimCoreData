@@ -527,7 +527,7 @@ extension EntityExtensionsCodeGenerator {
         
         // entity
         let propertyName = self.entityDescription.name!.camelCasePluralized()
-        self.string.appendLine(self.parameters.accessModifier + "var \(propertyName): AlecrimCoreData.Table<\(self.className)> { return AlecrimCoreData.Table<\(self.className)>(dataContext: self) }", indentLevel: 1)
+        self.string.appendLine(self.parameters.accessModifier + "var \(propertyName): AlecrimCoreData.Table<\(self.className)> { return AlecrimCoreData.Table<\(self.className)>(context: self) }", indentLevel: 1)
         
         // end
         self.string.appendLine()
