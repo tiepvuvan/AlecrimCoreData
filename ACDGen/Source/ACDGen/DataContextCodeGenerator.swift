@@ -19,13 +19,16 @@ public final class DataContextCodeGenerator: CodeGenerator {
 
     public func generate() throws {
         //
-        guard self.parameters.dataContextName != "" else { return }
+        let className = self.parameters.dataContextName
+        let superClassName = "NSManagedObjectContext"
+
+        //
+        guard className != "" && className.lowercased() != superClassName.lowercased() else { return }
         
         //
         let string = NSMutableString()
         
         //
-        let className = self.parameters.dataContextName
         
         // header
         string.appendHeader(className, type: .class)
@@ -36,8 +39,6 @@ public final class DataContextCodeGenerator: CodeGenerator {
         string.appendLine()
         
         // class
-        let superClassName = "NSManagedObjectContext"
-        
         string.appendLine("@objc(\(className))")
         string.appendLine(self.parameters.accessModifier + "class \(className): \(superClassName) {")
         string.appendLine()

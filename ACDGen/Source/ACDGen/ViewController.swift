@@ -27,7 +27,7 @@ class ViewController: NSViewController {
         // Do any additional setup after loading the view.
         self.dataModelLabel.isHidden = true
         self.dataModelLabel.stringValue = ""
-        self.dataContextNameTextField.stringValue = "DataContext"
+        self.dataContextNameTextField.stringValue = "NSManagedObjectContext" // "DataContext"
         self.useScalarPropertiesCheckBox.state = NSOnState
         self.useSwiftStringCheckBox.state = NSOnState
         self.useSwiftStringCheckBox.isEnabled = false
