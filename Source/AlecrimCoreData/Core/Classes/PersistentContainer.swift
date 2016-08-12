@@ -14,6 +14,8 @@ public struct PersistentContainerOptions {
     public static var defaultComparisonPredicateOptions: NSComparisonPredicate.Options = [.caseInsensitive, .diacriticInsensitive]
 }
 
+// FIXME: this class is using a lot of unsafe bit casts to provide generic support (errors can occur if the derived managed object class add stored properties or new methods)
+
 public class PersistentContainer<T: NSManagedObjectContext> {
 
     // MARK: -
@@ -29,7 +31,7 @@ public class PersistentContainer<T: NSManagedObjectContext> {
     
     public var name: String { return self.underlyingPersistentContainer.name }
     
-    public var viewContext: T { return self.underlyingPersistentContainer.viewContext as! T }
+    public var viewContext: T { return unsafeBitCast(self.underlyingPersistentContainer.viewContext, to: T.self) }
     
     public var managedObjectModel: NSManagedObjectModel { return self.underlyingPersistentContainer.managedObjectModel }
     
@@ -64,13 +66,13 @@ public class PersistentContainer<T: NSManagedObjectContext> {
     }
     
     public func newBackgroundContext() -> T {
-        return self.underlyingPersistentContainer.newBackgroundContext() as! T
+        return unsafeBitCast(self.underlyingPersistentContainer.newBackgroundContext(), to: T.self)
     }
     
     public func performBackgroundTask(_ block: (T) -> Swift.Void) {
         self.underlyingPersistentContainer.performBackgroundTask { backgroundContext in
             PersistentContainer.configureManagedObjectContext(backgroundContext)
-            block(backgroundContext as! T)
+            block(unsafeBitCast(backgroundContext, to: T.self))
         }
     }
     
