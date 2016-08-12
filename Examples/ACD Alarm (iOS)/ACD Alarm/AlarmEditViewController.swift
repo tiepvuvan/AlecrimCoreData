@@ -51,10 +51,10 @@ class AlarmEditViewController: UIViewController {
             
         case "SaveUnwindSegue":
             if let alarm = self.alarm {
-                self.fillAlarm(alarm: alarm)
+                self.fillAlarm(alarm)
             }
             else {
-                self.fillAlarm(alarm: AppDelegate.shared.viewContext.alarms.create())
+                self.fillAlarm(AppDelegate.shared.viewContext.alarms.create())
             }
             
             AppDelegate.shared.saveViewContext()
@@ -68,7 +68,7 @@ class AlarmEditViewController: UIViewController {
 
 extension AlarmEditViewController {
     
-    private func fillAlarm(alarm: Alarm) {
+    private func fillAlarm(_ alarm: Alarm) {
         if alarm.isInserted {
             alarm.identifier = UUID().uuidString
         }
