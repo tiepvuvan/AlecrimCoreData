@@ -118,7 +118,7 @@ extension AlarmTableViewController {
         let alarm = self.fetchRequestController.object(at: indexPath)
         
         cell.textLabel!.text = self.dateFormatter.string(from: alarm.date)
-        cell.detailTextLabel!.text = alarm.label
+        cell.detailTextLabel!.text = alarm.type.name + " " + alarm.label
         
         return cell
     }
