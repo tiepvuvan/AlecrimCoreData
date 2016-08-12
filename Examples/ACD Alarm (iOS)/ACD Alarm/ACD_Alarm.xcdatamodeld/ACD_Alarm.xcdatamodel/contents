@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11215.2" systemVersion="16A286a" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Alarm" representedClassName="Alarm" parentEntity="Entity" syncable="YES">
-        <attribute name="hour" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isActive" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
-        <attribute name="repeats" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="repetitionFlag" optional="YES" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="type" maxCount="1" deletionRule="Nullify" destinationEntity="AlarmType" inverseName="alarms" inverseEntity="AlarmType" syncable="YES"/>
     </entity>
     <entity name="AlarmType" representedClassName="AlarmType" parentEntity="Entity" syncable="YES">
@@ -16,7 +15,7 @@
     </entity>
     <fetchRequest name="AlarmTypeFetchRequest" entity="AlarmType"/>
     <elements>
-        <element name="Alarm" positionX="-54" positionY="-9" width="128" height="120"/>
+        <element name="Alarm" positionX="-54" positionY="-9" width="128" height="105"/>
         <element name="AlarmType" positionX="-18" positionY="54" width="128" height="75"/>
         <element name="Entity" positionX="-63" positionY="-18" width="128" height="60"/>
     </elements>

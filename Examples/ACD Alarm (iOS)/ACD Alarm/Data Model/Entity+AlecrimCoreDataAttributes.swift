@@ -17,7 +17,7 @@ import AlecrimCoreData
 
 extension Entity {
 
-    public static let identifier = AlecrimCoreData.Attribute<String>("identifier")
+    static let identifier = AlecrimCoreData.Attribute<String>("identifier")
 
 }
 
@@ -25,7 +25,7 @@ extension Entity {
 
 extension AlecrimCoreData.AttributeProtocol where Self.ValueType: Entity {
 
-    public var identifier: AlecrimCoreData.Attribute<String> { return AlecrimCoreData.Attribute<String>("identifier", self) }
+    var identifier: AlecrimCoreData.Attribute<String> { return AlecrimCoreData.Attribute<String>("identifier", self) }
 
 }
 
@@ -33,7 +33,7 @@ extension AlecrimCoreData.AttributeProtocol where Self.ValueType: Entity {
 
 extension NSManagedObjectContext {
 
-    public var entities: AlecrimCoreData.Table<Entity> { return AlecrimCoreData.Table<Entity>(context: self) }
+    var entities: AlecrimCoreData.Table<Entity> { return AlecrimCoreData.Table<Entity>(context: self) }
 
 }
 

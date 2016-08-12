@@ -17,12 +17,11 @@ import AlecrimCoreData
 
 extension Alarm {
 
-    public static let hour = AlecrimCoreData.Attribute<Date>("hour")
-    public static let label = AlecrimCoreData.Attribute<String>("label")
-    public static let repeats = AlecrimCoreData.Attribute<Bool>("repeats")
-    public static let repetitionFlag = AlecrimCoreData.NullableAttribute<Int64>("repetitionFlag")
+    static let date = AlecrimCoreData.Attribute<Date>("date")
+    static let isActive = AlecrimCoreData.Attribute<Bool>("isActive")
+    static let label = AlecrimCoreData.Attribute<String>("label")
 
-    public static let type = AlecrimCoreData.Attribute<AlarmType>("type")
+    static let type = AlecrimCoreData.Attribute<AlarmType>("type")
 
 }
 
@@ -30,12 +29,11 @@ extension Alarm {
 
 extension AlecrimCoreData.AttributeProtocol where Self.ValueType: Alarm {
 
-    public var hour: AlecrimCoreData.Attribute<Date> { return AlecrimCoreData.Attribute<Date>("hour", self) }
-    public var label: AlecrimCoreData.Attribute<String> { return AlecrimCoreData.Attribute<String>("label", self) }
-    public var repeats: AlecrimCoreData.Attribute<Bool> { return AlecrimCoreData.Attribute<Bool>("repeats", self) }
-    public var repetitionFlag: AlecrimCoreData.NullableAttribute<Int64> { return AlecrimCoreData.NullableAttribute<Int64>("repetitionFlag", self) }
+    var date: AlecrimCoreData.Attribute<Date> { return AlecrimCoreData.Attribute<Date>("date", self) }
+    var isActive: AlecrimCoreData.Attribute<Bool> { return AlecrimCoreData.Attribute<Bool>("isActive", self) }
+    var label: AlecrimCoreData.Attribute<String> { return AlecrimCoreData.Attribute<String>("label", self) }
 
-    public var type: AlecrimCoreData.Attribute<AlarmType> { return AlecrimCoreData.Attribute<AlarmType>("type", self) }
+    var type: AlecrimCoreData.Attribute<AlarmType> { return AlecrimCoreData.Attribute<AlarmType>("type", self) }
 
 }
 
@@ -43,7 +41,7 @@ extension AlecrimCoreData.AttributeProtocol where Self.ValueType: Alarm {
 
 extension NSManagedObjectContext {
 
-    public var alarms: AlecrimCoreData.Table<Alarm> { return AlecrimCoreData.Table<Alarm>(context: self) }
+    var alarms: AlecrimCoreData.Table<Alarm> { return AlecrimCoreData.Table<Alarm>(context: self) }
 
 }
 

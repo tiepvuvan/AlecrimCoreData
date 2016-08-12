@@ -17,9 +17,9 @@ import AlecrimCoreData
 
 extension AlarmType {
 
-    public static let name = AlecrimCoreData.Attribute<String>("name")
+    static let name = AlecrimCoreData.Attribute<String>("name")
 
-    public static let alarms = AlecrimCoreData.Attribute<Set<Alarm>>("alarms")
+    static let alarms = AlecrimCoreData.Attribute<Set<Alarm>>("alarms")
 
 }
 
@@ -27,9 +27,9 @@ extension AlarmType {
 
 extension AlecrimCoreData.AttributeProtocol where Self.ValueType: AlarmType {
 
-    public var name: AlecrimCoreData.Attribute<String> { return AlecrimCoreData.Attribute<String>("name", self) }
+    var name: AlecrimCoreData.Attribute<String> { return AlecrimCoreData.Attribute<String>("name", self) }
 
-    public var alarms: AlecrimCoreData.Attribute<Set<Alarm>> { return AlecrimCoreData.Attribute<Set<Alarm>>("alarms", self) }
+    var alarms: AlecrimCoreData.Attribute<Set<Alarm>> { return AlecrimCoreData.Attribute<Set<Alarm>>("alarms", self) }
 
 }
 
@@ -37,7 +37,7 @@ extension AlecrimCoreData.AttributeProtocol where Self.ValueType: AlarmType {
 
 extension NSManagedObjectContext {
 
-    public var alarmTypes: AlecrimCoreData.Table<AlarmType> { return AlecrimCoreData.Table<AlarmType>(context: self) }
+    var alarmTypes: AlecrimCoreData.Table<AlarmType> { return AlecrimCoreData.Table<AlarmType>(context: self) }
 
 }
 

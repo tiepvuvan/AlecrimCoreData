@@ -11,7 +11,7 @@ import Foundation
 import CoreData
 
 @objc(Alarm)
-public class Alarm: Entity {
+class Alarm: Entity {
 
 }
 

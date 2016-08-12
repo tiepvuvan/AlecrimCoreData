@@ -14,13 +14,13 @@ import CoreData
 
 extension AlarmType {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<AlarmType> {
+    @nonobjc class func fetchRequest() -> NSFetchRequest<AlarmType> {
         return NSFetchRequest<AlarmType>(entityName: "AlarmType")
     }
 
-    @NSManaged public var name: String
+    @NSManaged var name: String
 
-    @NSManaged public var alarms: Set<Alarm>
+    @NSManaged var alarms: Set<Alarm>
 
 }
 
@@ -29,16 +29,16 @@ extension AlarmType {
 extension AlarmType {
 
     @objc(addAlarmsObject:)
-    @NSManaged public func addToAlarms(_ value: Alarm)
+    @NSManaged func addToAlarms(_ value: Alarm)
 
     @objc(removeAlarmsObject:)
-    @NSManaged public func removeFromAlarms(_ value: Alarm)
+    @NSManaged func removeFromAlarms(_ value: Alarm)
 
     @objc(addAlarms:)
-    @NSManaged public func addToAlarms(_ values: Set<Alarm>)
+    @NSManaged func addToAlarms(_ values: Set<Alarm>)
 
     @objc(removeAlarms:)
-    @NSManaged public func removeFromAlarms(_ values: Set<Alarm>)
+    @NSManaged func removeFromAlarms(_ values: Set<Alarm>)
 
 }
 

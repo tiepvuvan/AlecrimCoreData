@@ -14,11 +14,11 @@ import CoreData
 
 extension Entity {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Entity> {
+    @nonobjc class func fetchRequest() -> NSFetchRequest<Entity> {
         return NSFetchRequest<Entity>(entityName: "Entity")
     }
 
-    @NSManaged public var identifier: String
+    @NSManaged var identifier: String
 
 }
 

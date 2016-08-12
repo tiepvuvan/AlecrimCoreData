@@ -14,16 +14,15 @@ import CoreData
 
 extension Alarm {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Alarm> {
+    @nonobjc class func fetchRequest() -> NSFetchRequest<Alarm> {
         return NSFetchRequest<Alarm>(entityName: "Alarm")
     }
 
-    @NSManaged public var hour: Date
-    @NSManaged public var label: String
-    @NSManaged public var repeats: Bool
-    @NSManaged public var repetitionFlag: Int64 // cannot mark as optional because Objective-C compatibility issues
+    @NSManaged var date: Date
+    @NSManaged var isActive: Bool
+    @NSManaged var label: String
 
-    @NSManaged public var type: AlarmType
+    @NSManaged var type: AlarmType
 
 }
 
