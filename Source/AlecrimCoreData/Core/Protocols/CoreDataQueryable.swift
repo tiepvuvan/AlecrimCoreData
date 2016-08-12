@@ -36,7 +36,7 @@ extension CoreDataQueryable {
             
             return c
         }
-        catch let error {
+        catch {
             AlecrimCoreDataError.handleError(error)
         }
     }
@@ -98,7 +98,7 @@ extension CoreDataQueryable {
             
             return value
         }
-        catch let error {
+        catch {
             AlecrimCoreDataError.handleError(error)
         }
     }

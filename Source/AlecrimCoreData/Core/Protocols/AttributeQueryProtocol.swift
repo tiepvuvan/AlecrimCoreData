@@ -49,7 +49,7 @@ extension AttributeQueryProtocol {
             
             return results
         }
-        catch let error {
+        catch {
             AlecrimCoreDataError.handleError(error)
         }
     }
@@ -62,7 +62,7 @@ extension AttributeQueryProtocol where Self.Element: NSDictionary {
         do {
             return try self.context.fetch(self.toFetchRequest()) as! [Self.Element]
         }
-        catch let error {
+        catch {
             AlecrimCoreDataError.handleError(error)
         }
     }

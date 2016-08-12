@@ -33,15 +33,20 @@ extension TableProtocol where Self.Element: NSManagedObject {
 
 extension TableProtocol {
     
-    public final func deleteObjects() throws {
-        let fetchRequest = self.toFetchRequest() as NSFetchRequest<NSManagedObjectID>
-        fetchRequest.resultType = .managedObjectIDResultType
-        
-        let objectIDs = try fetchRequest.execute()
-        
-        for objectID in objectIDs {
-            let object = try self.context.existingObject(with: objectID)
-            self.context.delete(object)
+    public final func deleteAll() {
+        do {
+            let fetchRequest = self.toFetchRequest() as NSFetchRequest<NSManagedObjectID>
+            fetchRequest.resultType = .managedObjectIDResultType
+            
+            let objectIDs = try fetchRequest.execute()
+            
+            for objectID in objectIDs {
+                let object = try self.context.existingObject(with: objectID)
+                self.context.delete(object)
+            }
+        }
+        catch {
+            AlecrimCoreDataError.handleError(error)
         }
     }
 
@@ -78,7 +83,7 @@ extension TableProtocol {
         do {
             return try self.context.fetch(self.toFetchRequest()) as! [Self.Element]
         }
-        catch let error {
+        catch {
             AlecrimCoreDataError.handleError(error)
         }
     }

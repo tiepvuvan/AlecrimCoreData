@@ -62,7 +62,7 @@ extension NSManagedObjectContext {
                     throw AlecrimCoreDataError.unexpectedValue(persistentStoreResult)
                 }
             }
-            catch let error {
+            catch {
                 completionHandler(0, error)
             }
         }
@@ -99,7 +99,7 @@ extension NSManagedObjectContext {
                     throw AlecrimCoreDataError.unexpectedValue(persistentStoreResult)
                 }
             }
-            catch let error {
+            catch {
                 completionHandler(0, error)
             }
         }

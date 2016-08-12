@@ -11,7 +11,7 @@
 		1426299C1D12B1A200567450 /* Enumerable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D97261B5DA55C00995795 /* Enumerable.swift */; };
 		1426299D1D12B1F400567450 /* Queryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D97271B5DA55C00995795 /* Queryable.swift */; };
 		1426299E1D12B22B00567450 /* AttributeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D97251B5DA55C00995795 /* AttributeProtocol.swift */; };
-		142629A01D12B3E400567450 /* PredicateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D97231B5DA55C00995795 /* PredicateExtensions.swift */; };
+		142629A01D12B3E400567450 /* NSPredicateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D97231B5DA55C00995795 /* NSPredicateExtensions.swift */; };
 		142629A11D12B44500567450 /* GenericQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1410FEF71B64033300F45A58 /* GenericQueryable.swift */; };
 		142629A21D12B56700567450 /* CoreDataQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FBAD6B1B76B23000EB662A /* CoreDataQueryable.swift */; };
 		142629A31D12B5AD00567450 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145D972A1B5DA55C00995795 /* Attribute.swift */; };
@@ -41,7 +41,7 @@
 		1447ADD11B52B2F000ADEAED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14585F271D18078E00F3806C /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		145D97221B5DA55C00995795 /* NSManagedObjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectExtensions.swift; sourceTree = "<group>"; };
-		145D97231B5DA55C00995795 /* PredicateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PredicateExtensions.swift; sourceTree = "<group>"; };
+		145D97231B5DA55C00995795 /* NSPredicateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPredicateExtensions.swift; sourceTree = "<group>"; };
 		145D97251B5DA55C00995795 /* AttributeProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeProtocol.swift; sourceTree = "<group>"; };
 		145D97261B5DA55C00995795 /* Enumerable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enumerable.swift; sourceTree = "<group>"; };
 		145D97271B5DA55C00995795 /* Queryable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queryable.swift; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 				14A5017B1B6739F40057DD8B /* NSFetchedResultsControllerExtensions.swift */,
 				14A5016F1B671A400057DD8B /* NSManagedObjectContextExtensions.swift */,
 				145D97221B5DA55C00995795 /* NSManagedObjectExtensions.swift */,
-				145D97231B5DA55C00995795 /* PredicateExtensions.swift */,
+				145D97231B5DA55C00995795 /* NSPredicateExtensions.swift */,
 				14A5017A1B6737710057DD8B /* OS X */,
 				14A501791B6737600057DD8B /* iOS */,
 			);
@@ -279,7 +279,7 @@
 				14585F2C1D18135F00F3806C /* FetchRequestControllerDelegate.swift in Sources */,
 				1426299E1D12B22B00567450 /* AttributeProtocol.swift in Sources */,
 				142629A31D12B5AD00567450 /* Attribute.swift in Sources */,
-				142629A01D12B3E400567450 /* PredicateExtensions.swift in Sources */,
+				142629A01D12B3E400567450 /* NSPredicateExtensions.swift in Sources */,
 				14585F2E1D182A4F00F3806C /* UICollectionViewExtensions.swift in Sources */,
 				142629A61D12BD7D00567450 /* Table.swift in Sources */,
 				142629A91D12C0E000567450 /* NSManagedObjectExtensions.swift in Sources */,

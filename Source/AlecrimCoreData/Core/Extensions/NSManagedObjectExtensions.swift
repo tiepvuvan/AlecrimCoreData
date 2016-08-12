@@ -41,6 +41,7 @@ extension NSManagedObject {
 
 extension NSManagedObject {
     
+    // TODO: move this code to other place
     public class func isIn(values: Set<NSManagedObject>) -> NSComparisonPredicate {
         let rightExpressionConstantValues = values.map { NSExpression(forConstantValue: $0.objectID) }
         let rightExpression = NSExpression(forAggregate: rightExpressionConstantValues)
