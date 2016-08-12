@@ -46,18 +46,13 @@ class AlarmEditViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
-        case "CancelUnwindSegue":
-            break
-            
         case "SaveUnwindSegue":
             if let alarm = self.alarm {
-                self.fillAlarm(alarm)
+                self.fillAndSaveAlarm(alarm)
             }
             else {
-                self.fillAlarm(viewContext.alarms.create())
+                self.fillAndSaveAlarm(viewContext.alarms.create())
             }
-            
-            try! viewContext.save()
             
         default:
             break
@@ -68,7 +63,7 @@ class AlarmEditViewController: UIViewController {
 
 extension AlarmEditViewController {
     
-    private func fillAlarm(_ alarm: Alarm) {
+    private func fillAndSaveAlarm(_ alarm: Alarm) {
         if alarm.isInserted {
             alarm.identifier = UUID().uuidString
         }
@@ -78,6 +73,8 @@ extension AlarmEditViewController {
         alarm.isActive = true
         
         alarm.date = self.datePicker.date
+        
+        try! viewContext.save()
     }
     
 }
