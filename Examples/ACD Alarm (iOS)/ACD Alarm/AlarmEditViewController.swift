@@ -54,10 +54,10 @@ class AlarmEditViewController: UIViewController {
                 self.fillAlarm(alarm)
             }
             else {
-                self.fillAlarm(AppDelegate.shared.viewContext.alarms.create())
+                self.fillAlarm(viewContext.alarms.create())
             }
             
-            AppDelegate.shared.saveViewContext()
+            try! viewContext.save()
             
         default:
             break
@@ -73,12 +73,11 @@ extension AlarmEditViewController {
             alarm.identifier = UUID().uuidString
         }
         
-        alarm.type = alarm.managedObjectContext!.alarmTypes.first({ $0.identifier == "home" })!
+        alarm.type = viewContext.alarmTypes.first({ $0.identifier == "home" })!
         alarm.label = "Alarm"
         alarm.isActive = true
         
         alarm.date = self.datePicker.date
-        
     }
     
 }

@@ -16,7 +16,7 @@ class AlarmTableViewController: UITableViewController {
     // MARK :-
     
     private lazy var fetchRequestController: FetchRequestController<Alarm> = {
-        let query = AppDelegate.shared.viewContext.alarms.orderBy { $0.date }
+        let query = viewContext.alarms.orderBy { $0.date }
         
         return query.toFetchRequestController()
     }()
@@ -136,8 +136,9 @@ extension AlarmTableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let alarm = self.fetchRequestController.object(at: indexPath)
+            
             alarm.delete()
-            AppDelegate.shared.saveViewContext()
+            try! viewContext.save()
         }
     }
     
