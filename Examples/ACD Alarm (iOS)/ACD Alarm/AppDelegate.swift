@@ -52,14 +52,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Core Data stack
     
-    lazy var persistentContainer: PersistentContainer<DataContext> = {
+    lazy var persistentContainer: NSPersistentContainer = {
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
          */
-        let container = PersistentContainer<DataContext>(name: "ACD_Alarm")
+        let container = NSPersistentContainer(name: "ACD_Alarm")
         
         container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
@@ -102,7 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: -
     
     func addInitialData() {
-        //
         self.persistentContainer.performBackgroundTask { backgroundContext in
             func addAlarmType(withIdentifier identifier: String, name: String) {
                 var alarmType: AlarmType! = backgroundContext.alarmTypes.first { $0.identifier == identifier }
@@ -122,7 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //
             try! backgroundContext.save()
             
-            //
+            // testing...
             DispatchQueue.main.async {
                 let query = self.persistentContainer.viewContext.alarmTypes.orderBy { $0.name }
                 
