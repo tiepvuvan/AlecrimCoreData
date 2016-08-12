@@ -9,14 +9,20 @@
 import UIKit
 import CoreData
 
+import AlecrimCoreData
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    static var shared: AppDelegate { return UIApplication.shared.delegate! as! AppDelegate }
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        self.addInitialData()
+        
+        //
         return true
     }
 
@@ -45,20 +51,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Core Data stack
-
-    lazy var persistentContainer: NSPersistentContainer = {
+    
+    lazy var persistentContainer: PersistentContainer<DataContext> = {
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
-        */
-        let container = NSPersistentContainer(name: "ACD_Alarm")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+         */
+        let container = PersistentContainer<DataContext>(name: "ACD_Alarm")
+        
+        container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
+                
                 /*
                  Typical reasons for an error here include:
                  * The parent directory does not exist, cannot be created, or disallows writing.
@@ -69,22 +76,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                  */
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-        })
+        }
+        
         return container
     }()
-
+    
     // MARK: - Core Data Saving support
 
-    func saveContext () {
+    func saveContext() {
         let context = persistentContainer.viewContext
+        
         if context.hasChanges {
             do {
                 try context.save()
-            } catch {
+            }
+            catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
+    
+    // MARK: -
+    
+    func addInitialData() {
+        //
+        self.persistentContainer.performBackgroundTask { backgroundContext in
+            func addAlarmType(withIdentifier identifier: String, name: String) {
+                var alarmType: AlarmType! = backgroundContext.alarmTypes.first { $0.identifier == identifier }
+                
+                if alarmType == nil {
+                    alarmType = backgroundContext.alarmTypes.create()
+                    alarmType.identifier = identifier
+                }
+                
+                alarmType.name = name
+            }
+            
+            //
+            addAlarmType(withIdentifier: "home", name: "Home")
+            addAlarmType(withIdentifier: "work", name: "Work")
+            
+            //
+            try! backgroundContext.save()
+            
+            //
+            DispatchQueue.main.async {
+                let query = self.persistentContainer.viewContext.alarmTypes.orderBy { $0.name }
+                
+                for alarmType in query {
+                    print(alarmType.identifier, alarmType.name)
+                }
             }
         }
     }
