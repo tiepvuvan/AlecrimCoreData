@@ -16,8 +16,6 @@ let viewContext = (UIApplication.shared.delegate! as! AppDelegate).persistentCon
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    static var shared: AppDelegate { return UIApplication.shared.delegate! as! AppDelegate }
-
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
