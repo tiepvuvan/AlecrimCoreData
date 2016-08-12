@@ -33,9 +33,9 @@ extension AlecrimCoreData.AttributeProtocol where Self.ValueType: AlarmType {
 
 }
 
-// MARK: - DataContext extensions
+// MARK: - NSManagedObjectContext extensions
 
-extension DataContext {
+extension NSManagedObjectContext {
 
     public var alarmTypes: AlecrimCoreData.Table<AlarmType> { return AlecrimCoreData.Table<AlarmType>(context: self) }
 

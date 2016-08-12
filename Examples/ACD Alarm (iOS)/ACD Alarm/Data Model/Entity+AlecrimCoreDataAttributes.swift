@@ -29,9 +29,9 @@ extension AlecrimCoreData.AttributeProtocol where Self.ValueType: Entity {
 
 }
 
-// MARK: - DataContext extensions
+// MARK: - NSManagedObjectContext extensions
 
-extension DataContext {
+extension NSManagedObjectContext {
 
     public var entities: AlecrimCoreData.Table<Entity> { return AlecrimCoreData.Table<Entity>(context: self) }
 
