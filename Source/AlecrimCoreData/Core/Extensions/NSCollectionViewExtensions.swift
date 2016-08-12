@@ -13,6 +13,7 @@
     
     extension FetchRequestController {
         
+        @discardableResult
         public func bind<ItemType: NSCollectionViewItem>(to collectionView: NSCollectionView, sectionOffset: Int = 0, cellConfigurationHandler: ((ItemType, IndexPath) -> Void)? = nil) -> Self {
             let insertedSectionIndexes = NSMutableIndexSet()
             let deletedSectionIndexes = NSMutableIndexSet()
