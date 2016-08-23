@@ -11,9 +11,9 @@ import CoreData
 
 extension NSManagedObjectContext {
     
-    internal func executeAsynchronousFetchRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>, completion completionHandler: ([AnyObject]?, NSError?) -> Void) throws {
+    internal func executeAsynchronousFetchRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>, completion completionHandler: @escaping ([AnyObject]?, NSError?) -> Void) throws {
         let asynchronousFetchRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { asynchronousFetchResult in
-            completionHandler(asynchronousFetchResult.finalResult, asynchronousFetchResult.operationError)
+            completionHandler(asynchronousFetchResult.finalResult, asynchronousFetchResult.operationError as? NSError)
         }
         
         let persistentStoreResult = try self.execute(asynchronousFetchRequest)
@@ -29,7 +29,7 @@ extension NSManagedObjectContext {
 
 extension NSManagedObjectContext {
     
-    internal func executeBatchUpdateRequest(entityDescription: NSEntityDescription, propertiesToUpdate: [NSObject : AnyObject], predicate: NSPredicate, completion completionHandler: (Int, Error?) -> Void) {
+    internal func executeBatchUpdateRequest(entityDescription: NSEntityDescription, propertiesToUpdate: [NSObject : AnyObject], predicate: NSPredicate, completion completionHandler: @escaping (Int, Error?) -> Void) {
         let batchUpdateRequest = NSBatchUpdateRequest(entity: entityDescription)
         batchUpdateRequest.propertiesToUpdate = propertiesToUpdate
         batchUpdateRequest.predicate = predicate
@@ -68,7 +68,7 @@ extension NSManagedObjectContext {
         }
     }
 
-    internal func executeBatchDeleteRequest(entityDescription: NSEntityDescription, objectIDs: [NSManagedObjectID], completion completionHandler: (Int, Error?) -> Void) {
+    internal func executeBatchDeleteRequest(entityDescription: NSEntityDescription, objectIDs: [NSManagedObjectID], completion completionHandler: @escaping (Int, Error?) -> Void) {
         let batchDeleteRequest = NSBatchDeleteRequest(objectIDs: objectIDs)
         batchDeleteRequest.resultType = .resultTypeCount
         

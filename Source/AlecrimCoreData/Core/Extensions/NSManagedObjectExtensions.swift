@@ -22,7 +22,7 @@ extension NSManagedObject {
         
         let otherManagedObject = try otherContext.existingObject(with: self.objectID)
         
-        return unsafeBitCast(otherManagedObject, to: self.dynamicType)
+        return unsafeBitCast(otherManagedObject, to: type(of: self))
     }
     
 }

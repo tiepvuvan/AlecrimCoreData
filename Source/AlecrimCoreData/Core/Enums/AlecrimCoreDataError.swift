@@ -17,14 +17,14 @@ public enum AlecrimCoreDataError: Error {
 
     case unexpectedValue(Any)
     
-    @noreturn
-    public static func handleError(_ error: Error, message: String = "Unhandled error. See callstack.") {
+    
+    public static func handleError(_ error: Error, message: String = "Unhandled error. See callstack.") -> Never  {
         // TODO:
         self.fatalError(message)
     }
     
-    @noreturn
-    public static func fatalError(_ message: String? = nil) {
+    
+    public static func fatalError(_ message: String? = nil) -> Never  {
         // TODO:
         if let message = message {
             Swift.fatalError(message)

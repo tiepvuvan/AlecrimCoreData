@@ -54,7 +54,7 @@ extension TableProtocol {
 
 extension TableProtocol where Self.Element: NSManagedObject {
     
-    public final func firstOrCreated(_ predicateClosure: @noescape (Self.Element.Type) -> NSComparisonPredicate) -> Self.Element {
+    public final func firstOrCreated(_ predicateClosure:  (Self.Element.Type) -> NSComparisonPredicate) -> Self.Element {
         let predicate = predicateClosure(Self.Element.self)
         
         if let entity = self.filter(using: predicate).first() {
@@ -64,7 +64,7 @@ extension TableProtocol where Self.Element: NSManagedObject {
             let entity = self.create()
             
             let attributeName = predicate.leftExpression.keyPath
-            let value: AnyObject = predicate.rightExpression.constantValue!
+            let value: AnyObject = predicate.rightExpression.constantValue! as AnyObject
             
             (entity as NSManagedObject).setValue(value, forKey: attributeName)
             

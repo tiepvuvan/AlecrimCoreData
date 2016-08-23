@@ -11,25 +11,25 @@ import CoreData
 
 internal final class FetchRequestControllerDelegate<T: NSManagedObject>: NSObject, NSFetchedResultsControllerDelegate {
     
-    private var needsReloadDataClosure: (() -> Void)?
+    fileprivate var needsReloadDataClosure: (() -> Void)?
     
-    private lazy var willChangeContentClosures = Array<() -> Void>()
-    private lazy var didChangeContentClosures = Array<() -> Void>()
+    fileprivate lazy var willChangeContentClosures = Array<() -> Void>()
+    fileprivate lazy var didChangeContentClosures = Array<() -> Void>()
     
-    private lazy var didInsertSectionClosures = Array<(FetchRequestControllerSection<T>, Int) -> Void>()
-    private lazy var didDeleteSectionClosures = Array<(FetchRequestControllerSection<T>, Int) -> Void>()
-    private lazy var didUpdateSectionClosures = Array<(FetchRequestControllerSection<T>, Int) -> Void>()
+    fileprivate lazy var didInsertSectionClosures = Array<(FetchRequestControllerSection<T>, Int) -> Void>()
+    fileprivate lazy var didDeleteSectionClosures = Array<(FetchRequestControllerSection<T>, Int) -> Void>()
+    fileprivate lazy var didUpdateSectionClosures = Array<(FetchRequestControllerSection<T>, Int) -> Void>()
     
-    private lazy var didInsertObjectClosures = Array<(T, IndexPath) -> Void>()
-    private lazy var didDeleteObjectClosures = Array<(T, IndexPath) -> Void>()
-    private lazy var didUpdateObjectClosures = Array<(T, IndexPath) -> Void>()
-    private lazy var didMoveObjectClosures = Array<(T, IndexPath, IndexPath) -> Void>()
+    fileprivate lazy var didInsertObjectClosures = Array<(T, IndexPath) -> Void>()
+    fileprivate lazy var didDeleteObjectClosures = Array<(T, IndexPath) -> Void>()
+    fileprivate lazy var didUpdateObjectClosures = Array<(T, IndexPath) -> Void>()
+    fileprivate lazy var didMoveObjectClosures = Array<(T, IndexPath, IndexPath) -> Void>()
     
-    private var sectionIndexTitleClosure: ((String) -> String?)?
+    fileprivate var sectionIndexTitleClosure: ((String) -> String?)?
 
     // MARK: - NSFetchedResultsControllerDelegate methods
     
-    @objc func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: AnyObject, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .insert:
             for closure in self.didInsertObjectClosures {
@@ -119,7 +119,7 @@ extension FetchRequestController {
 extension FetchRequestController {
  
     @discardableResult
-    internal func needsReloadData(closure: () -> Void) -> Self {
+    internal func needsReloadData(closure: @escaping () -> Void) -> Self {
         self.delegate.needsReloadDataClosure = closure
         return self
     }
@@ -129,61 +129,61 @@ extension FetchRequestController {
 extension FetchRequestController {
     
     @discardableResult
-    public func willChangeContent(closure: () -> Void) -> Self {
+    public func willChangeContent(closure: @escaping () -> Void) -> Self {
         self.delegate.willChangeContentClosures.append(closure)
         return self
     }
     
     @discardableResult
-    public func didChangeContent(closure: () -> Void) -> Self {
+    public func didChangeContent(closure: @escaping () -> Void) -> Self {
         self.delegate.didChangeContentClosures.append(closure)
         return self
     }
     
     @discardableResult
-    public func didInsertSection(closure: (FetchRequestControllerSection<T>, Int) -> Void) -> Self {
+    public func didInsertSection(closure: @escaping (FetchRequestControllerSection<T>, Int) -> Void) -> Self {
         self.delegate.didInsertSectionClosures.append(closure)
         return self
     }
     
     @discardableResult
-    public func didDeleteSection(closure: (FetchRequestControllerSection<T>, Int) -> Void) -> Self {
+    public func didDeleteSection(closure: @escaping (FetchRequestControllerSection<T>, Int) -> Void) -> Self {
         self.delegate.didDeleteSectionClosures.append(closure)
         return self
     }
     
     @discardableResult
-    public func didUpdateSection(closure: (FetchRequestControllerSection<T>, Int) -> Void) -> Self {
+    public func didUpdateSection(closure: @escaping (FetchRequestControllerSection<T>, Int) -> Void) -> Self {
         self.delegate.didUpdateSectionClosures.append(closure)
         return self
     }
     
     @discardableResult
-    public func didInsertObject(closure: (T, IndexPath) -> Void) -> Self {
+    public func didInsertObject(closure: @escaping (T, IndexPath) -> Void) -> Self {
         self.delegate.didInsertObjectClosures.append(closure)
         return self
     }
     
     @discardableResult
-    public func didDeleteObject(closure: (T, IndexPath) -> Void) -> Self {
+    public func didDeleteObject(closure: @escaping (T, IndexPath) -> Void) -> Self {
         self.delegate.didDeleteObjectClosures.append(closure)
         return self
     }
     
     @discardableResult
-    public func didUpdateObject(closure: (T, IndexPath) -> Void) -> Self {
+    public func didUpdateObject(closure: @escaping (T, IndexPath) -> Void) -> Self {
         self.delegate.didUpdateObjectClosures.append(closure)
         return self
     }
     
     @discardableResult
-    public func didMoveObject(closure: (T, IndexPath, IndexPath) -> Void) -> Self {
+    public func didMoveObject(closure: @escaping (T, IndexPath, IndexPath) -> Void) -> Self {
         self.delegate.didMoveObjectClosures.append(closure)
         return self
     }
     
     @discardableResult
-    public func sectionIndexTitle(closure: (String) -> String?) -> Self {
+    public func sectionIndexTitle(closure: @escaping (String) -> String?) -> Self {
         self.delegate.sectionIndexTitleClosure = closure
         return self
     }

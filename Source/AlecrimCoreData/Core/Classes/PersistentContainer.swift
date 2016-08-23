@@ -61,7 +61,7 @@ public class PersistentContainer<T: NSManagedObjectContext> {
     
     // MARK: -
     
-    public func loadPersistentStores(completionHandler block: (NSPersistentStoreDescription, Error?) -> Swift.Void) {
+    public func loadPersistentStores(completionHandler block: @escaping (NSPersistentStoreDescription, Error?) -> Swift.Void) {
         self.underlyingPersistentContainer.loadPersistentStores(completionHandler: block)
     }
     
@@ -69,7 +69,7 @@ public class PersistentContainer<T: NSManagedObjectContext> {
         return unsafeBitCast(self.underlyingPersistentContainer.newBackgroundContext(), to: T.self)
     }
     
-    public func performBackgroundTask(_ block: (T) -> Swift.Void) {
+    public func performBackgroundTask(_ block: @escaping (T) -> Swift.Void) {
         self.underlyingPersistentContainer.performBackgroundTask { backgroundContext in
             PersistentContainer.configureManagedObjectContext(backgroundContext)
             block(unsafeBitCast(backgroundContext, to: T.self))

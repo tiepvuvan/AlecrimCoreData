@@ -26,7 +26,7 @@ public struct AttributeQuery<T: NSDictionary>: AttributeQueryProtocol {
     public var returnsDistinctResults = false
     public var propertiesToFetch = [String]()
     
-    private init(context: NSManagedObjectContext, entityDescription: NSEntityDescription, offset: Int, limit: Int, batchSize: Int, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?) {
+    fileprivate init(context: NSManagedObjectContext, entityDescription: NSEntityDescription, offset: Int, limit: Int, batchSize: Int, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?) {
         self.context = context
         self.entityDescription = entityDescription
         
@@ -44,7 +44,7 @@ public struct AttributeQuery<T: NSDictionary>: AttributeQueryProtocol {
 extension Table {
     
     // one attribute
-    public func select<P, A: AttributeProtocol where A.ValueType == P>(_ closure: @noescape (T.Type) -> A) -> AttributeQuery<P> {
+    public func select<P, A: AttributeProtocol>(_ closure: (T.Type) -> A) -> AttributeQuery<P> where A.ValueType == P {
         var attributeQuery = AttributeQuery<P>(
             context: self.context,
             entityDescription: self.entityDescription,

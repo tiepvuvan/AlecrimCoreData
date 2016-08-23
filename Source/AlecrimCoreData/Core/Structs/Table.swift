@@ -14,8 +14,8 @@ import CoreData
 private var cachedObjectDescriptions = [String : NSEntityDescription]()
 
 private func cachedObjectDescription(for context: NSManagedObjectContext, managedObjectType: NSManagedObject.Type) -> NSEntityDescription {
-    let contextClassName = String(context.dynamicType)
-    let managedObjectClassName = String(managedObjectType)
+    let contextClassName = String(describing: type(of: context))
+    let managedObjectClassName = String(describing: managedObjectType)
     let cacheKey = "\(contextClassName)|\(managedObjectClassName)"
     
     let entityDescription: NSEntityDescription

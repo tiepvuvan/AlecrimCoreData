@@ -48,28 +48,28 @@ extension CoreDataQueryable {
 
 extension CoreDataQueryable {
     
-    public final func sum<U>(_ closure: @noescape (Self.Element.Type) -> Attribute<U>) -> U {
+    public final func sum<U>(_ closure:  (Self.Element.Type) -> Attribute<U>) -> U {
         let attribute = closure(Self.Element.self)
         return self.aggregate(using: "sum", attribute: attribute)
     }
     
-    public final func min<U>(_ closure: @noescape (Self.Element.Type) -> Attribute<U>) -> U {
+    public final func min<U>(_ closure:  (Self.Element.Type) -> Attribute<U>) -> U {
         let attribute = closure(Self.Element.self)
         return self.aggregate(using: "min", attribute: attribute)
     }
     
-    public final func max<U>(_ closure: @noescape (Self.Element.Type) -> Attribute<U>) -> U {
+    public final func max<U>(_ closure:  (Self.Element.Type) -> Attribute<U>) -> U {
         let attribute = closure(Self.Element.self)
         return self.aggregate(using: "max", attribute: attribute)
     }
 
     // same as average, for convenience
-    public final func avg<U>(_ closure: @noescape (Self.Element.Type) -> Attribute<U>) -> U {
+    public final func avg<U>(_ closure:  (Self.Element.Type) -> Attribute<U>) -> U {
         let attribute = closure(Self.Element.self)
         return self.aggregate(using: "average", attribute: attribute)
     }
 
-    public final func average<U>(_ closure: @noescape (Self.Element.Type) -> Attribute<U>) -> U {
+    public final func average<U>(_ closure:  (Self.Element.Type) -> Attribute<U>) -> U {
         let attribute = closure(Self.Element.self)
         return self.aggregate(using: "average", attribute: attribute)
     }

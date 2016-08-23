@@ -20,7 +20,7 @@ public protocol GenericQueryable: Queryable {
 
 extension GenericQueryable {
     
-    public final func orderBy<A: AttributeProtocol, V where A.ValueType == V>(ascending: Bool = true, _ orderingClosure: @noescape (Self.Element.Type) -> A) -> Self {
+    public final func orderBy<A: AttributeProtocol, V>(ascending: Bool = true, _ orderingClosure:  (Self.Element.Type) -> A) -> Self where A.ValueType == V {
         return self.sort(using: orderingClosure(Self.Element.self), ascending: ascending)
     }
     
@@ -30,7 +30,7 @@ extension GenericQueryable {
 
 extension GenericQueryable {
     
-    public final func filter(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Self {
+    public final func filter(_ predicateClosure:  (Self.Element.Type) -> NSPredicate) -> Self {
         return self.filter(using: predicateClosure(Self.Element.self))
     }
     
@@ -40,7 +40,7 @@ extension GenericQueryable {
 
 extension GenericQueryable {
     
-    public final func count(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Int {
+    public final func count(_ predicateClosure:  (Self.Element.Type) -> NSPredicate) -> Int {
         return self.filter(using: predicateClosure(Self.Element.self)).count()
     }
     
@@ -48,11 +48,11 @@ extension GenericQueryable {
 
 extension GenericQueryable {
     
-    public final func any(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Bool {
+    public final func any(_ predicateClosure:  (Self.Element.Type) -> NSPredicate) -> Bool {
         return self.filter(using: predicateClosure(Self.Element.self)).any()
     }
     
-    public final func none(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Bool {
+    public final func none(_ predicateClosure:  (Self.Element.Type) -> NSPredicate) -> Bool {
         return self.filter(using: predicateClosure(Self.Element.self)).none()
     }
     
@@ -60,7 +60,7 @@ extension GenericQueryable {
 
 extension GenericQueryable {
     
-    public final func first(_ predicateClosure: @noescape (Self.Element.Type) -> NSPredicate) -> Self.Element? {
+    public final func first(_ predicateClosure:  (Self.Element.Type) -> NSPredicate) -> Self.Element? {
         return self.filter(using: predicateClosure(Self.Element.self)).first()
     }
     

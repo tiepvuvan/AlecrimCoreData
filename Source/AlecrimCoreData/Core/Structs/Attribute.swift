@@ -52,22 +52,22 @@ extension Attribute where T: Collection {
         return Attribute<Int>("@count", self)
     }
     
-    public func max<U>(_ closure: @noescape (T.Iterator.Element.Type) -> Attribute<U>) -> Attribute<U> {
+    public func max<U>(_ closure: (T.Iterator.Element.Type) -> Attribute<U>) -> Attribute<U> {
         let innerAttribute = closure(T.Iterator.Element.self)
         return Attribute<U>("@max." + innerAttribute.___name, self)
     }
 
-    public func min<U>(_ closure: @noescape (T.Iterator.Element.Type) -> Attribute<U>) -> Attribute<U> {
+    public func min<U>(_ closure: (T.Iterator.Element.Type) -> Attribute<U>) -> Attribute<U> {
         let innerAttribute = closure(T.Iterator.Element.self)
         return Attribute<U>("@min." + innerAttribute.___name, self)
     }
     
-    public func avg<U>(_ closure: @noescape (T.Iterator.Element.Type) -> Attribute<U>) -> Attribute<U> {
+    public func avg<U>(_ closure: (T.Iterator.Element.Type) -> Attribute<U>) -> Attribute<U> {
         let innerAttribute = closure(T.Iterator.Element.self)
         return Attribute<U>("@avg." + innerAttribute.___name, self)
     }
 
-    public func sum<U>(_ closure: @noescape (T.Iterator.Element.Type) -> Attribute<U>) -> Attribute<U> {
+    public func sum<U>(_ closure: (T.Iterator.Element.Type) -> Attribute<U>) -> Attribute<U> {
         let innerAttribute = closure(T.Iterator.Element.self)
         return Attribute<U>("@sum." + innerAttribute.___name, self)
     }
